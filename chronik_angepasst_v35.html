@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronik – Trommler- und Pfeifercorps 1912 Brachelen e.V.</title>
+<link rel="icon" type="image/png" href="Bilder/CoA_Brachelen.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --blue-dark:  #0b1f36;
+    --blue-mid:   #14365a;
+    --gold:       #b8943a;
+    --gold-light: #d2b86a;
+    --red:        #b51f2a;
+    --cream:      #f4f1e8;
+    --blue-pale:  #dbeaf3;
+    --border:     #ccd3d8;
+    --text:       #101820;
+    --text-muted: #58636d;
+    /* ─── zentrale Stellschrauben ─── */
+    --text-width:    640px;   /* max. Breite des Textblocks          */
+}
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Lora', Georgia, serif;
+    color: var(--text);
+    background: var(--cream);
+    line-height: 1.85;
+    overflow-x: hidden;
+}
+
+/* ════════════════════════════════════════════════════════
+   LAYOUT-RAHMEN
+   ════════════════════════════════════════════════════════ */
+.content { margin-left: 0; }
+
+/* ─── EINZELBILD oben (Bild 1) ─────────────────────────
+   Das Bild wird beim Scrollen "vorhang-artig" nach oben weggezogen.
+   Der erste Textblock liegt darunter bereits fest im Viewport und wird
+   erst sichtbar, wenn das Bild nach oben verschwindet.        */
+.intro-stage {
+    position: relative;
+    min-height: 200vh; /* genug Scrollstrecke für Vorhang + stehenden Text */
+    background: #fff;
+}
+.intro-figure {
+    position: sticky;          /* bleibt als Rahmen am Viewport oben */
+    top: 0;
+    height: 100vh;
+    overflow: hidden;          /* clipt das nach oben verschobene Bild */
+    z-index: 2;                /* liegt VOR dem Text */
+}
+/* Bild + Bildtitel liegen gemeinsam im inneren Container.
+   Dadurch wird auch der Titel zusammen mit dem Bild nach oben weggezogen. */
+.intro-figure-inner {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+}
+.intro-figure-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* dunkler Verlauf hinter der weißen Schrift am unteren Bildrand */
+.intro-figure-inner::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 42vh;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.58) 100%);
+    pointer-events: none;
+}
+/* Überschrift unten auf dem Bild */
+.intro-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;          /* über Bild + dunklem Verlauf */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 2rem 2rem 12vh;
+    color: #fff;
+    pointer-events: none;
+}
+/* Inner-Wrapper, damit nur Text + Trennstrich (nicht der ganze Layout-Kasten) skaliert */
+.intro-overlay-inner {
+    transform-origin: center bottom;
+    will-change: opacity, transform;
+}
+.intro-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 3.2rem);
+    line-height: 1.1;
+    max-width: 800px;
+    margin: 0;
+    color: #fff;
+    text-shadow: 0 2px 18px rgba(0,0,0,.65);
+}
+/* gold-roter Trennstrich (passend zum restlichen Design) */
+.intro-overlay .accent {
+    width: 90px;
+    height: 2px;
+    margin: 1rem auto 0;
+    background: linear-gradient(90deg, var(--gold-light) 0%, #fff 100%);
+    border-radius: 2px;
+}
+
+
+/* ─── KLEINE JAHRESZAHLEN AUF DEN BILDERN ───── */
+.image-year {
+    position: absolute;
+    z-index: 4;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 1.7vw, 1.38rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: .03em;
+    color: var(--gold);
+    text-shadow: 0 2px 14px rgba(0,0,0,.58);
+    pointer-events: none;
+}
+.image-year.pos-br {
+    right: 2.2rem;
+    bottom: 2rem;
+    text-align: right;
+}
+.image-year.pos-bl {
+    left: 2.2rem;
+    bottom: 2rem;
+    text-align: left;
+}
+.image-year.pos-bc {
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+    text-align: center;
+}
+.story-scrollbox .fade-year {
+    opacity: 0;
+    transition: opacity .12s linear;
+}
+.story-scrollbox .fade-year.is-first {
+    opacity: 1;
+}
+
+/* ─── TEXTBLOCK auf voller Breite (weiß, schwarz) ────── */
+.text-block {
+    background: #fff;
+    padding: 5rem 2rem;
+}
+.text-block .text-inner {
+    max-width: var(--text-width);
+    margin: 0 auto;
+}
+/* Der erste Textblock liegt direkt unter dem Bild, aber auf derselben
+   Viewport-Position. Beim Scrollen bleibt er stehen; nur das Bild darüber
+   wird nach oben weggezogen und gibt den Text frei. */
+.intro-stage .text-block {
+    position: sticky;
+    top: 0;
+    z-index: 1;                              /* hinter dem Bild-Rahmen */
+    margin-top: -100vh;
+    min-height: 100vh;
+    padding: 5rem 2rem;
+    display: flex;
+    align-items: center;
+}
+.intro-stage .text-block .text-inner {
+    width: 100%;
+}
+.text-block .year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 800;
+    color: var(--gold); letter-spacing: .08em;
+    margin-bottom: .4rem;
+}
+.text-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+    font-weight: 700; line-height: 1.15;
+    color: var(--blue-dark);
+    margin-bottom: 1.2rem;
+}
+.text-block p  { font-size: .98rem; color: var(--text); margin-bottom: .9rem; }
+.text-block ul { padding-left: 1.4rem; margin-bottom: .9rem; }
+.text-block li { font-size: .98rem; color: var(--text); margin-bottom: .4rem; }
+.text-block em.quote {
+    display: block; font-style: italic;
+    border-left: 3px solid var(--gold);
+    padding-left: 1rem; margin: 1.2rem 0;
+    color: var(--blue-mid);
+}
+
+/* ════════════════════════════════════════════════════════
+   STORY-BLÖCKE (Bild zoomt heran, dann sticky + Text)
+   ════════════════════════════════════════════════════════ */
+.story { position: relative; }
+
+.story-figure {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+.story-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(.55);   /* Startwert; wird per JS gesetzt */
+    will-change: transform;
+}
+
+/* ─── STORY 2: stehendes Bild + innen scrollende Textbox ─────
+   Das Bild kommt normal ins Bild, bleibt während der Textpassage stehen
+   und zoomt nicht. Der lange Text wird per JS innerhalb der kleinen Box
+   nach oben geschoben. Nach Ende des Textes scrollt die ganze Sektion weg. */
+.story-scrollbox {
+    position: relative;
+    min-height: 270vh;
+    background: #000;
+}
+.story-scrollbox .story-figure {
+    background: #000;
+}
+.story-scrollbox .story-figure img {
+    transform: none !important;
+    will-change: auto;
+}
+.story-scrollbox .fade-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .12s linear;
+}
+.story-scrollbox .fade-image:first-child { opacity: 1; }
+.story-scrollbox .story-text {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 100vh;
+    margin-top: -100vh;
+    padding: 0;
+    display: block;
+    pointer-events: none;
+}
+.story-scrollbox .story-text .text-inner {
+    position: absolute;
+    left: 2rem;
+    bottom: 8vh;
+    width: min(460px, calc(100% - 4rem));
+    max-width: none;
+    height: clamp(190px, 26vh, 255px);
+    padding: 1.25rem 1.45rem;
+    overflow: hidden;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    pointer-events: auto;
+}
+.story-scrollbox .scrollbox-content {
+    will-change: transform;
+}
+.story-scrollbox .story-text .text-inner::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3.2rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0), #fff 88%);
+    pointer-events: none;
+}
+.story-scrollbox .story-text.visible .text-inner {
+    opacity: 1;
+    transform: none;
+}
+.story-scrollbox .story-text h3 {
+    font-size: clamp(1.25rem, 2.1vw, 1.8rem);
+    margin-bottom: .8rem;
+}
+.story-scrollbox .story-text p,
+.story-scrollbox .story-text li {
+    font-size: .92rem;
+    line-height: 1.7;
+}
+
+/* Text über dem stehenden Bild, weißer Kasten / schwarzer Text */
+.story-text {
+    position: relative;
+    z-index: 5;
+    margin-top: -100vh;
+    min-height: 100vh;
+    padding: 8vh 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.story-text .text-inner {
+    max-width: var(--text-width);
+    padding: 2.2rem 2.4rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.25);
+}
+.story-text .year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 800;
+    color: var(--gold); letter-spacing: .08em;
+    margin-bottom: .4rem;
+}
+.story-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+    font-weight: 700; line-height: 1.15;
+    color: var(--blue-dark);
+    margin-bottom: 1.2rem;
+}
+.story-text p  { font-size: .98rem; color: var(--text); margin-bottom: .9rem; }
+.story-text ul { padding-left: 1.4rem; margin-bottom: .9rem; }
+.story-text li { font-size: .98rem; color: var(--text); margin-bottom: .4rem; }
+.story-text em.quote {
+    display: block; font-style: italic;
+    border-left: 3px solid var(--gold);
+    padding-left: 1rem; margin: 1.2rem 0;
+    color: var(--blue-mid);
+}
+
+/* sanftes Einblenden */
+.story-text .text-inner { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+.story-text.visible .text-inner { opacity: 1; transform: none; }
+
+
+
+/* ─── STORY 3: geteilter Text + Vollbild-Statements ───── */
+.history-split-intro {
+    background: #fff;
+}
+.history-split-intro .text-inner {
+    max-width: var(--text-width);
+}
+.fullscreen-quote {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+.fullscreen-quote figure {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+}
+.fullscreen-quote img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.fullscreen-quote::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.14) 55%, rgba(0,0,0,.48) 100%);
+    pointer-events: none;
+}
+.fullscreen-quote .overlay-copy {
+    position: absolute;
+    right: 2.2rem;
+    bottom: 8vh;
+    z-index: 2;
+    width: min(430px, calc(100% - 4.4rem));
+    color: #fff;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .75s ease, transform .75s ease;
+    text-shadow: 0 2px 16px rgba(0,0,0,.68);
+}
+.fullscreen-quote.visible .overlay-copy {
+    opacity: 1;
+    transform: translateY(0);
+}
+.fullscreen-quote .overlay-copy p {
+    font-size: clamp(1rem, 2vw, 1.32rem);
+    line-height: 1.55;
+    margin: 0;
+}
+.continuation-block {
+    background: #fff;
+}
+
+/* ─── STORY 3: Bild 8 + überfahrender Abschlusstext ───── */
+.outro-image-sequence {
+    position: relative;
+    min-height: 185vh;
+    background: #fff;
+}
+.outro-image-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+.outro-image-layer {
+    position: absolute;
+    inset: 0;
+    will-change: transform, opacity;
+}
+.outro-image-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.outro-image-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.12) 55%, rgba(0,0,0,.44) 100%);
+    pointer-events: none;
+}
+.outro-image-sticky .overlay-copy {
+    position: absolute;
+    right: 2.2rem;
+    bottom: 8vh;
+    z-index: 3;
+    width: min(430px, calc(100% - 4.4rem));
+    color: #fff;
+    text-align: left;
+    text-shadow: 0 2px 16px rgba(0,0,0,.72);
+    will-change: transform, opacity;
+}
+.outro-image-sticky .overlay-copy p {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.32rem);
+    line-height: 1.55;
+}
+.outro-follow-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    padding: 14vh 2rem 0;
+    will-change: transform, opacity;
+}
+.outro-follow-text .text-inner {
+    max-width: var(--text-width);
+    margin: 0 auto;
+    padding: 2.2rem 2.4rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.25);
+}
+.outro-follow-text p {
+    font-size: .98rem;
+    color: var(--text);
+    margin-bottom: .9rem;
+}
+
+
+
+/* ─── STORY 3: geteilter Text + Bildsequenz ───── */
+.rebuild-sequence {
+    position: relative;
+    min-height: 315vh;
+    background: #fff;
+}
+.rebuild-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+.rebuild-base-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 9vh;
+    z-index: 1;
+    padding: 0 2rem;
+    pointer-events: none;
+    will-change: opacity;
+}
+.rebuild-base-panel .text-inner {
+    max-width: var(--text-width);
+    margin: 0 auto;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+}
+.rebuild-base-panel .year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+}
+.rebuild-base-panel h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--blue-dark);
+    margin-bottom: 1.2rem;
+}
+.rebuild-base-panel p {
+    font-size: .98rem;
+    color: var(--text);
+    margin-bottom: .9rem;
+}
+.rebuild-spacer {
+    height: 1.15rem;
+}
+.rebuild-bg-fade {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: #fff;
+    opacity: 0;
+    will-change: opacity;
+}
+.rebuild-layer {
+    position: absolute;
+    inset: 0;
+    will-change: transform, opacity;
+}
+.rebuild-image5 {
+    z-index: 3;
+    transform: translateY(100%);
+}
+.rebuild-image5 img,
+.rebuild-image7 img,
+.rebuild-image8 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.rebuild-image5::after,
+.fullscreen-quote::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.12) 55%, rgba(0,0,0,.46) 100%);
+    pointer-events: none;
+}
+.rebuild-quote,
+.fullscreen-quote .overlay-copy {
+    position: absolute;
+    z-index: 2;
+    color: #fff;
+    text-shadow: 0 2px 16px rgba(0,0,0,.72);
+}
+.rebuild-quote p,
+.fullscreen-quote .overlay-copy p {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.32rem);
+    line-height: 1.55;
+}
+.rebuild-quote.quote5 {
+    right: 2.2rem;
+    bottom: 8vh;
+    width: min(430px, calc(100% - 4.4rem));
+    text-align: left;
+}
+.rebuild-image6-wrap {
+    position: absolute;
+    z-index: 4;
+    right: 8vw;
+    bottom: 8vh;
+    width: min(42vw, 560px);
+    height: 82vh;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+.rebuild-image6-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,.28));
+}
+.rebuild-quote.quote6 {
+    left: 3.2rem;
+    bottom: 18vh;
+    width: min(420px, 36vw);
+    z-index: 5;
+    text-align: left;
+    will-change: transform, opacity;
+    color: var(--text);
+    text-shadow: none;
+}
+.fullscreen-quote {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+.fullscreen-quote figure {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+}
+.fullscreen-quote img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.fullscreen-quote .overlay-copy {
+    right: 2.2rem;
+    bottom: 8vh;
+    width: min(430px, calc(100% - 4.4rem));
+    text-align: left;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .75s ease, transform .75s ease;
+}
+.fullscreen-quote.visible .overlay-copy {
+    opacity: 1;
+    transform: translateY(0);
+}
+.continuation-block {
+    background: #fff;
+}
+
+/* ─── STORY 3: Bild 8 + überfahrender Abschlusstext ───── */
+.outro-image-sequence {
+    position: relative;
+    min-height: 185vh;
+    background: #fff;
+}
+.outro-image-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+.outro-image-layer {
+    position: absolute;
+    inset: 0;
+    will-change: transform, opacity;
+}
+.outro-image-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.outro-image-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.12) 55%, rgba(0,0,0,.44) 100%);
+    pointer-events: none;
+}
+.outro-image-sticky .overlay-copy {
+    position: absolute;
+    right: 2.2rem;
+    bottom: 8vh;
+    z-index: 3;
+    width: min(430px, calc(100% - 4.4rem));
+    color: #fff;
+    text-align: left;
+    text-shadow: 0 2px 16px rgba(0,0,0,.72);
+    will-change: transform, opacity;
+}
+.outro-image-sticky .overlay-copy p {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.32rem);
+    line-height: 1.55;
+}
+.outro-follow-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    padding: 14vh 2rem 0;
+    will-change: transform, opacity;
+}
+.outro-follow-text .text-inner {
+    max-width: var(--text-width);
+    margin: 0 auto;
+    padding: 2.2rem 2.4rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.25);
+}
+.outro-follow-text p {
+    font-size: .98rem;
+    color: var(--text);
+    margin-bottom: .9rem;
+}
+
+
+/* ─── STORY 4A: 1960er Bildsequenz mit Textboxen ───── */
+.sixties-sequence {
+    position: relative;
+    min-height: 430vh;
+    background: #000;
+}
+.sixties-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+}
+.sixties-layer {
+    position: absolute;
+    inset: 0;
+    will-change: opacity, clip-path;
+}
+.sixties-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.sixties-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.03) 0%, rgba(0,0,0,.14) 55%, rgba(0,0,0,.48) 100%);
+    pointer-events: none;
+}
+.sixties-image9 { z-index: 1; }
+.sixties-image11 { z-index: 2; opacity: 0; }
+.sixties-image10 { z-index: 3; }
+.sixties-image12 { z-index: 4; opacity: 0; }
+.sixties-copy {
+    position: absolute;
+    z-index: 6;
+    width: min(560px, calc(100% - 4.4rem));
+    padding: 1.7rem 1.9rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.28);
+    will-change: clip-path;
+}
+.sixties-copy .year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+}
+.sixties-copy h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--blue-dark);
+    margin-bottom: 1rem;
+}
+.sixties-copy p {
+    font-size: .98rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin: 0;
+}
+.sixties-copy-1 {
+    left: 2.2rem;
+    top: calc(9vh - 1.75rem);
+}
+.sixties-copy-2 {
+    right: 2.2rem;
+    bottom: 3vh;
+    clip-path: inset(100% 0 0 0);
+}
+
+
+
+/* ─── STORY 4B/5: 1975–Heute Sequenz ───── */
+.seventies-sequence {
+    position: relative;
+    min-height: 760vh;
+    background: #fff;
+}
+.seventies-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+.seventies-layer {
+    position: absolute;
+    inset: 0;
+    will-change: transform, opacity, clip-path;
+}
+.seventies-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.seventies-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.03) 0%, rgba(0,0,0,.14) 55%, rgba(0,0,0,.48) 100%);
+    pointer-events: none;
+}
+.seventies-image13 { z-index: 2; }
+.seventies-image14 { z-index: 3; opacity: 0; }
+.seventies-image15 { z-index: 4; opacity: 1; }
+.seventies-copy {
+    position: absolute;
+    z-index: 5;
+    width: min(560px, calc(100% - 4.4rem));
+    padding: 1.7rem 1.9rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.28);
+    will-change: transform, opacity, clip-path;
+}
+.seventies-copy p {
+    font-size: .98rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin: 0;
+}
+.seventies-copy-3 {
+    left: 2.2rem;
+    bottom: 8vh;
+}
+.seventies-copy-4 {
+    right: 2.2rem;
+    bottom: 8vh;
+}
+
+
+.today-underlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: auto;
+    z-index: 6;
+    min-height: 100vh;
+    display: block;
+    align-items: initial;
+    padding: 0 0 12vh;
+    clip-path: inset(100% 0 0 0);
+    will-change: transform, clip-path;
+}
+
+.today-standalone {
+    background: #fff;
+    min-height: 100vh;
+    padding: 5rem 2rem;
+    display: flex;
+    align-items: center;
+}
+.today-standalone .text-inner {
+    max-width: var(--text-width);
+    margin: 0 auto;
+    width: 100%;
+}
+.today-standalone .year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 800;
+    color: var(--gold); letter-spacing: .08em;
+    margin-bottom: .4rem;
+}
+.today-standalone h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+    font-weight: 700; line-height: 1.15;
+    color: var(--blue-dark);
+    margin-bottom: 1.2rem;
+}
+.today-standalone p  { font-size: .98rem; color: var(--text); margin-bottom: .9rem; }
+.today-final-text {
+    will-change: opacity, transform;
+}
+.today-standalone ul { padding-left: 1.4rem; margin-bottom: .9rem; }
+.today-standalone li { font-size: .98rem; color: var(--text); margin-bottom: .4rem; }
+
+.today-underlay.today-standalone {
+    display: block;
+    align-items: initial;
+    padding: 0 0 12vh;
+}
+.today-underlay .text-inner {
+    padding: 5rem 2rem 0;
+}
+.today-inline-image {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+}
+.today-inline-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Bild 17 wird am Ende der Heute-Sequenz wie ein Vorhang über den stehenden Text geschoben */
+.seventies-final-image-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    overflow: hidden;
+    pointer-events: none;
+    background: #fff;
+    transform: translateY(100vh);
+    will-change: transform, opacity;
+}
+.seventies-final-image-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: #fff;
+    opacity: var(--final-white-opacity, 0);
+    pointer-events: none;
+}
+.seventies-final-image-layer img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.05);
+    transform-origin: center center;
+    will-change: transform, opacity;
+}
+.seventies-final-image-layer .final-image-copy {
+    z-index: 3;
+}
+
+/* ─── SCHLUSSSZENE: letzter Text + Bild 17 + Credit in einer gemeinsamen Sticky-Bühne ───── */
+.final-image-sequence {
+    position: relative;
+    min-height: 265vh;
+    margin-top: 0; /* Bild 17 startet erst nach dem vollständig lesbaren Heute-Text */
+    background: #fff;
+    z-index: 2;
+}
+.final-image-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+    z-index: 1;
+    pointer-events: none;
+}
+.final-image-sticky::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.10) 55%, rgba(0,0,0,.30) 100%);
+    opacity: var(--final-overlay-opacity, 0);
+    pointer-events: none;
+}
+.final-image-sticky img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: translateY(100vh) scale(1.05);
+    transform-origin: center center;
+    will-change: transform, opacity;
+}
+.final-pretext-layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    padding: 1.1rem 2rem 0;
+    background: #fff;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+.final-pretext-layer .text-inner {
+    max-width: var(--text-width);
+    margin: 0 auto;
+    width: 100%;
+}
+.final-pretext-layer p {
+    font-size: .98rem;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: .9rem;
+}
+.final-pretext-layer::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3rem;
+    height: 3rem;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+.today-final-text {
+    will-change: opacity, transform;
+}
+.final-image-copy {
+    position: absolute;
+    right: 2.2rem;
+    bottom: 8vh;
+    z-index: 5;
+    width: min(560px, calc(100% - 4.4rem));
+    padding: 1.7rem 1.9rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.28);
+    text-align: left;
+    text-shadow: none;
+    will-change: transform, opacity;
+    pointer-events: none;
+    transform: translateY(28px);
+}
+.final-image-copy p {
+    margin: 0;
+    font-size: .98rem;
+    line-height: 1.75;
+    color: var(--text);
+}
+.final-image-copy-credit {
+    opacity: 0;
+}
+.seventies-final-image-layer .final-image-copy-credit {
+    left: 50%;
+    right: auto;
+    top: 8vh;
+    bottom: auto;
+    width: min(680px, calc(100% - 4.4rem));
+    text-align: center;
+    transform: translate(-50%, 28px);
+}
+.seventies-final-image-layer .final-image-copy-credit p {
+    text-align: center;
+}
+.final-outro-stack {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    margin: 0;
+    pointer-events: auto;
+}
+
+/* ─── GELB-ROTE AKZENTLINIEN AUF WEISSEN TEXTBLÖCKEN ───── */
+.text-block .text-inner,
+.story-text .text-inner,
+.rebuild-base-panel .text-inner,
+.outro-follow-text .text-inner,
+.today-standalone .text-inner {
+    position: relative;
+}
+.text-block .text-inner::before,
+.story-text .text-inner::before,
+.rebuild-base-panel .text-inner::before,
+.outro-follow-text .text-inner::before,
+.sixties-copy::before,
+.seventies-copy::before,
+.today-standalone .text-inner::before,
+.final-image-copy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+    pointer-events: none;
+}
+.rebuild-base-panel .text-inner::before,
+.text-block .text-inner::before,
+.today-standalone .text-inner::before {
+    width: 52px;
+    right: auto;
+}
+.story-scrollbox .story-text .text-inner::before {
+    z-index: 2;
+}
+.today-underlay .text-inner::before {
+    top: 5rem;
+    left: 2rem;
+}
+
+/* ─── OUTRO ───────────────────────────────────────────── */
+.chronik-outro {
+    background: rgba(244,241,232,.90);
+    color: var(--text-muted);
+    text-align: center;
+    padding: .95rem 2rem 1rem;
+}
+.chronik-outro p {
+    font-size: .86rem;
+    font-style: italic;
+    line-height: 1.42;
+    max-width: 680px;
+    margin: 0 auto;
+}
+.chronik-outro p + p { margin-top: .28rem; }
+.chronik-outro a { color: var(--blue-mid); }
+.chronik-outro .btn { margin-top: .62rem; }
+.btn {
+    display: inline-block; margin-top: 1.6rem;
+    padding: .5rem 1.35rem;
+    font-family: 'Lora', serif; font-size: .86rem;
+    text-decoration: none;
+    background: transparent; color: var(--blue-mid);
+    border: 1.5px solid var(--blue-mid);
+    transition: background .22s, transform .15s;
+}
+.btn:hover { background: var(--blue-pale); transform: translateY(-1px); }
+
+/* ─── MODALS ────────────────────────────────────────────── */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(20,40,26,.65);
+            z-index: 500;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 3rem 1rem;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--white);
+            max-width: 720px; width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: modalIn .3s ease-out both;
+        }
+        .modal-box::before {
+            content: '';
+            display: block; height: 4px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+            position: absolute; top: 0; left: 0; right: 0;
+        }
+        .modal-close {
+            position: absolute; top: 1.2rem; right: 1.4rem;
+            background: none; border: none; cursor: pointer;
+            font-size: 1.6rem; line-height: 1; color: var(--text-muted);
+            transition: color .2s;
+        }
+        .modal-close:hover { color: var(--blue-dark); }
+        .modal-box h2 { font-size: 1.9rem; text-align: left; margin-bottom: 1.6rem; }
+        .modal-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; color: var(--blue-dark);
+            margin: 1.6rem 0 .5rem;
+        }
+        .modal-body p, .modal-body ul {
+            font-size: .9rem; color: var(--text-muted);
+            line-height: 1.85; margin-bottom: .5rem;
+        }
+        .modal-body ul { padding-left: 1.5rem; }
+        .modal-body a { color: var(--blue-mid); }
+
+/* ─── FOOTER ────────────────────────────────────────────── */
+        .footer {
+            background: var(--blue-dark);
+            color: rgba(200,220,235,.65);
+            padding: 2.5rem 2rem;
+        }
+        .footer-inner {
+            max-width: 860px; margin: 0 auto;
+            display: flex; flex-wrap: wrap;
+            align-items: center; justify-content: space-between;
+            gap: 1rem;
+        }
+        .footer-copy { font-size: .82rem; }
+        .footer-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+        .footer-link {
+            background: none; border: none;
+            color: rgba(200,220,235,.5);
+            font-family: 'Lora', serif; font-size: .82rem;
+            cursor: pointer; padding: 0;
+            transition: color .2s;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .footer-link:hover { color: var(--gold-light); }
+
+@keyframes modalIn { from { opacity: 0; transform: translateY(-14px); }
+
+/* ─── MOBIL ───────────────────────────────────────────── */
+@media (max-width: 700px) {
+    .text-block { padding: 3.5rem 1.3rem; }
+    .intro-stage { min-height: 215vh; }
+    .intro-stage .text-block {
+        padding: 3.5rem 1.3rem;
+        align-items: flex-start;
+    }
+    .intro-overlay { padding: 2rem 1.3rem 10vh; }
+    .story-text { padding: 6vh 1.3rem; }
+    .story-text .text-inner { padding: 1.6rem 1.4rem; }
+    .story-scrollbox { min-height: 280vh; }
+    .story-scrollbox .story-text { padding: 0; }
+
+    .story-scrollbox .story-text .text-inner {
+        left: 1.3rem;
+        right: 1.3rem;
+        bottom: 6vh;
+        width: auto;
+        height: 32vh;
+        padding: 1.15rem 1.25rem;
+    }
+    .rebuild-sequence { min-height: 345vh; }
+    .rebuild-base-panel { top: 7vh; padding: 0 1.3rem; }
+    .rebuild-base-panel .text-inner { padding-top: 0; }
+    .rebuild-quote.quote5,
+    .rebuild-quote.quote6,
+    .fullscreen-quote .overlay-copy,
+    .outro-image-sticky .overlay-copy {
+        left: 1.3rem;
+        right: 1.3rem;
+        width: auto;
+    }
+    .rebuild-quote.quote5,
+    .fullscreen-quote .overlay-copy,
+    .outro-image-sticky .overlay-copy { bottom: 6vh; }
+    .rebuild-quote.quote6 { bottom: 22vh; }
+    .rebuild-image6-wrap {
+        right: 4vw;
+        width: 58vw;
+        height: 72vh;
+        bottom: 10vh;
+    }
+    .rebuild-quote p,
+    .fullscreen-quote .overlay-copy p,
+    .outro-image-sticky .overlay-copy p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    .outro-image-sequence { min-height: 195vh; }
+    .outro-follow-text { padding: 11vh 1.3rem 0; }
+    .outro-follow-text .text-inner { padding: 1.6rem 1.4rem; }
+    .sixties-sequence { min-height: 450vh; }
+    .sixties-copy {
+        left: 1.3rem;
+        right: 1.3rem;
+        width: auto;
+        padding: 1.4rem 1.35rem;
+    }
+    .sixties-copy-1 { top: calc(7vh - 1.45rem); }
+    .sixties-copy-2 { bottom: 3vh; }
+    .sixties-copy h3 { font-size: clamp(1.25rem, 5.4vw, 1.7rem); }
+    .sixties-copy p {
+        font-size: .92rem;
+        line-height: 1.62;
+    }
+
+    .seventies-sequence { min-height: 780vh; }
+    .seventies-copy {
+        left: 1.3rem;
+        right: 1.3rem;
+        width: auto;
+        padding: 1.4rem 1.35rem;
+    }
+    .seventies-copy-3,
+    .seventies-copy-4 {
+        bottom: 6vh;
+    }
+    .seventies-copy p {
+        font-size: .92rem;
+        line-height: 1.62;
+    }
+    .today-standalone {
+        min-height: 100vh;
+        padding: 3.5rem 1.3rem;
+        align-items: flex-start;
+    }
+    .today-underlay.today-standalone {
+        padding: 6vh 1.3rem 10vh;
+    }
+    .today-final-image {
+        width: calc(100% - 2.6rem);
+        height: 62vh;
+        min-height: 300px;
+        margin-top: 2rem;
+    }
+    .final-image-sequence { min-height: 245vh; }
+    .final-pretext-layer {
+        padding: 1rem 1.3rem 0;
+    }
+    .final-pretext-layer p {
+        font-size: .92rem;
+        line-height: 1.62;
+    }
+    .final-image-copy {
+        left: 1.3rem;
+        right: 1.3rem;
+        bottom: 6vh;
+        width: auto;
+        padding: 1.4rem 1.35rem;
+    }
+    .seventies-final-image-layer .final-image-copy-credit {
+        left: 50%;
+        right: auto;
+        top: 6vh;
+        bottom: auto;
+        width: calc(100% - 2.6rem);
+        padding: 1.4rem 1.35rem;
+        transform: translate(-50%, 28px);
+    }
+    .final-image-copy p {
+        font-size: .92rem;
+        line-height: 1.62;
+    }
+    .chronik-outro {
+        padding: 1rem 1.2rem 1.05rem;
+    }
+    .chronik-outro p {
+        font-size: .8rem;
+        line-height: 1.38;
+    }
+    .chronik-outro .btn {
+        margin-top: .65rem;
+    }
+    .today-underlay .text-inner::before {
+        top: 5rem;
+        left: 2rem;
+    }
+    .footer {
+        padding: .9rem 1.2rem;
+    }
+    .image-year {
+        font-size: 1rem;
+    }
+    .image-year.pos-br,
+    .image-year.pos-bl,
+    .image-year.pos-bc {
+        bottom: 1.35rem;
+    }
+    .image-year.pos-br {
+        right: 1.3rem;
+    }
+    .image-year.pos-bl {
+        left: 1.3rem;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="content">
+
+    <!-- ─── INTRO: Bild + erster Text liegen im selben Scroll-Bereich.
+         Das Bild wird beim Scrollen nach oben weggezogen und gibt
+         den dahinterliegenden Text frei.                          -->
+    <section class="intro-stage">
+        <div class="intro-figure" data-year="1912">
+            <div class="intro-figure-inner">
+                <img src="Bilder/1_Trommlercorps1916_1.JPG" alt="Frühe Jahre des Corps">
+                <div class="image-year pos-br">ca. 1920</div>
+                <div class="intro-overlay">
+                    <div class="intro-overlay-inner">
+                        <h1>Ein kurzer Überblick</h1>
+						<h1>über unsere Historie</h1>
+                        <div class="accent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT 1 (volle Breite, weiß) – sitzt hinter dem Bild und wird freigelegt -->
+        <div class="text-block">
+            <div class="text-inner">
+                <div class="year">1911 – 1912</div>
+                <h3>Die Idee und die Gründung</h3>
+                <p>Als 1911 ein paar junge Männer die Idee entwickelten, gemeinsam Musik in einem Tambourcorps zu machen, stand deren Verwirklichung zunächst einmal das Problem im Wege, dass man diese Art von Musik nur in den umliegenden Städten betreiben konnte. Also sahen sich Heinrich Bauer, Wilhelm Dieken, Jean Holländer, Josef Müschen und Karl Thomas gezwungen, einen anderen Weg zu beschreiten: Sie machten sich Gedanken über die Gründung eines eigenen Vereins.</p>
+                <p>Man marschierte zunächst einmal probeweise an der Spitze des „Kameradschaftlichen Kriegervereins“ bei der Kaiser-Geburtstagsfeier – ja, den gab’s da noch – und des Kriegerverbandsfestes in Süggerath mit. Da das schon mal ganz gut ankam, fanden sich bald weitere fünf Interessierte: Andreas Kremer, Albert Küppenbender, Matthias Klein, Franz Mülfarth und Hubert Zitzen. Offensichtlich befand man diese Mannzahl als ausreichend, um einen Verein zu gründen. Dies geschah 1912.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── STORY 2: Bild steht, Text scrollt innerhalb der Box ───── -->
+    <div class="story story-scrollbox" data-year="1913">
+        <figure class="story-figure">
+            <img class="fade-image" src="Bilder/2_Archiv Nr. 642.jpg" alt="Der Verein in den frühen Jahrzehnten">
+            <div class="image-year fade-year pos-br is-first">1934</div>
+            <img class="fade-image" src="Bilder/3_Trommlercorps_Linnich.JPG" alt="Trommlercorps in Linnich">
+            <div class="image-year fade-year pos-br">unbekannt</div>
+            <img class="fade-image" src="Bilder/4_Trommlercorps1949_2.jpg" alt="Trommlercorps 1949">
+            <div class="image-year fade-year pos-br">1949</div>
+        </figure>
+        <div class="story-text">
+            <div class="text-inner">
+                <div class="scrollbox-content">
+                    <div class="year">1913 – 1945</div>
+                    <h3>Erste Erfolge und schwere Jahre</h3>
+                    <p>Von Anfang an zeigte sich der Verein sehr rührig und veranstaltete schon 1913 mit Hilfe der anderen Ortsvereine einen Fassnachtszug durch Brachelen. Vom Reingewinn der Fassnachtsveranstaltung (der Begriff „Karneval“ wurde erst viel später gebräuchlich!) wurden die ersten Uniformen angeschafft, die man für standesgemäße auswärtige Auftritte unbedingt benötigte. Schon bald stellten sich erste Erfolge ein, die die Männer aus dem langen Dorf an der Rur zu gefürchteten Konkurrenten der Stadtvereine machten. Auch die Mitgliederzahl stieg „rasant“.</p>
+                    <p>Noch 1913 traten Josef Deffur, Josef Jansweidt, Peter Zitzen und Paul Schmitz dem Verein bei. Leider wurden alle Aktivitäten des Vereins durch den Ausbruch des Ersten Weltkrieges gestoppt. Aber bereits 1919 wurde das Vereinsleben wieder in Gang gesetzt. Kaspar Erdweg, Gerhard Zitzen, Hubert Mertens und Johann Krieger kamen dazu. 1928 hatte der Verein bereits 24 aktive Mitglieder, die, wie man auf dem Vertrag von 1928 feststellen kann, „richtig“ Geld verdienten.</p>
+                    <p>Diesmal blieben dem Vereinsleben, das sich prächtig und sehr erfolgreich entwickelte, immerhin 20 Jahre, bis 1939 der Zweite Weltkrieg ausbrach, der dem Verein noch wesentlich mehr zusetzte, als es der erste schon getan hatte. 10 aktive Mitglieder mussten ihr Leben lassen. Darüber hinaus hatte der Verein sein gesamtes Vereinsvermögen, Uniformen, Instrumente und Noten verloren.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── STORY 3: geteilter Text + Bildsequenz ───────────────── -->
+    <section class="rebuild-sequence" data-year="1945">
+        <div class="rebuild-sticky">
+            <div class="rebuild-base-panel" id="rebuildBasePanel">
+                <div class="text-inner">
+                    <div class="year">1945 – 1957</div>
+                    <h3>Wiederaufbau in schwierigen Zeiten</h3>
+                    <p>Die Führung des Vereins übernahm Schmitze Jupp, der zusammen mit Mölfarths Fränz, Erdwechs Käsper und Mertense Hubett auch die Ausbildung der Neumitglieder übernahm. Die Kasse übernahm schon damals ein junger Mann namens Kaspar (Kääp) Sieberichs, der 1938 dem Verein beigetreten war.</p>
+                    <p>Wer sich die gesamte Chronik zu Gemüte führt, kann schon ein paar Stunden Spaß mit den Anekdoten der damals selten spaßigen Zeit verbringen:</p>
+                </div>
+            </div>
+            <div class="rebuild-bg-fade" id="rebuildBgFade"></div>
+
+            <div class="rebuild-layer rebuild-image5" id="rebuildImage5">
+                <img src="Bilder/5_Archiv Nr. 643.jpg" alt="Archivbild – Jubiläen">
+                <div class="image-year pos-bl">unbekannt</div>
+                <div class="rebuild-quote quote5" id="rebuildQuote5">
+                    <p>Jubiläen, die wegen Geldmangels um ein Jahr verschoben wurden</p>
+                </div>
+            </div>
+
+            <div class="rebuild-image6-wrap" id="rebuildImage6Wrap">
+                <img src="Bilder/6_Franz Mülfarth.png" alt="Franz Mülfarth">
+            </div>
+            <div class="rebuild-quote quote6" id="rebuildQuote6">
+                <p>Neue Uniformen, für die man sich das Geld teilweise beim Kirchenchor geliehen hatte und erst mit dem Erlös aus einer Verlosung beim Familienabend zurückzahlen konnte</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="fullscreen-quote">
+        <figure>
+            <img src="Bilder/7_Trommlercorps1949_3.jpg" alt="Wiederaufbau in schwierigen Zeiten – Malermeister">
+            <div class="image-year pos-bl">1949</div>
+        </figure>
+        <div class="overlay-copy">
+            <p>Ein Malermeister, der die Trommelreifen gestrichen hatte und erst aus dem Erlös aus der Verlosung anlässlich des Maiballs bezahlt werden konnte</p>
+        </div>
+    </section>
+
+    <section class="outro-image-sequence">
+        <div class="outro-image-sticky">
+            <div class="outro-image-layer" id="outroImageLayer">
+                <img src="Bilder/8_Trommlercorps1953_1_1.JPG" alt="Wiederaufbau in schwierigen Zeiten – Bevölkerung Brachelens">
+                <div class="image-year pos-bl">1953</div>
+            </div>
+            <div class="overlay-copy" id="outroQuote8">
+                <p>Die Finanzierung einer neuen Uniform durch eine Haussammlung bei der bekannt vereinsfreundlichen Bevölkerung Brachelens</p>
+            </div>
+            <div class="outro-follow-text" id="outroFollowText">
+                <div class="text-inner">
+                    <p>Eine „wilde“, aber auch eine gute Zeit, die endenden 40er und die beginnenden 50er, aber wie so häufig eine Zeit der stetigen Wechsel. Der Ehrenvorsitz des Vereins, damals ein sehr einflussreiches Amt, wechselte vom verstorbenen Jean Holländer auf Josef Kreutzer. Der langjährige Vorsitzende Josef Rick trat eine Küsterstelle in Rheydt an und gab sein Amt ab an Franz Mülfarth, der darüber hinaus auch Corpsführer war.</p>
+                    <p>Eine kurzfristige finanzielle Erholung sorgte 1956 für den ersten Vereinsausflug an Mosel und Ahr. Beim 45-jährigen Bestehen 1957 waren noch 6 Gründungsmitglieder aktiv dabei.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── STORY 4A: 1960er Bildsequenz mit zwei Textboxen ───── -->
+    <section class="sixties-sequence" data-year="1960">
+        <div class="sixties-sticky">
+            <div class="sixties-layer sixties-image9" id="sixtiesImage9">
+                <img src="Bilder/9_Archiv Nr. 635.jpg" alt="Archivbild aus den 1960er Jahren">
+                <div class="image-year pos-br">unbekannt</div>
+            </div>
+            <div class="sixties-layer sixties-image11" id="sixtiesImage11">
+                <img src="Bilder/11_Gefallenenehrung.jpg" alt="Gefallenenehrung">
+                <div class="image-year pos-bl">unbekannt</div>
+            </div>
+            <div class="sixties-layer sixties-image10" id="sixtiesImage10">
+                <img src="Bilder/10_Hauptstrasse Gormanns.jpg" alt="Hauptstraße Gormanns">
+                <div class="image-year pos-br">unbekannt</div>
+            </div>
+            <div class="sixties-layer sixties-image12" id="sixtiesImage12">
+                <img src="Bilder/12_Trommlercorps 1977.jpg" alt="Trommlercorps 1977">
+                <div class="image-year pos-bl">1977</div>
+            </div>
+
+            <div class="sixties-copy sixties-copy-1" id="sixtiesText1">
+                <div class="year">1975 – 1996</div>
+                <h3>Prägende Persönlichkeiten und neue Wege</h3>
+                <p>Anfang der 60er übernahm ein Mann die Stabführung von Franz Mülfarth, der in den folgenden Jahrzehnten zum Aushängeschild unseres Vereins und weit über die Grenzen Brachelens hinaus bekannt wurde: Kruetzere Willke. Er war ein Vorbild an Pflichtbewusstsein, das, gepaart mit seiner einnehmenden Menschlichkeit, viele Menschen nah und fern noch heute an ihn erinnert.</p>
+            </div>
+
+            <div class="sixties-copy sixties-copy-2" id="sixtiesText2">
+                <p>Manchmal aber geschehen aus heiterem Himmel Dinge, die man nur als Glücksfall bezeichnen kann. Die Söhne von Kruetzere Willke mussten ja nun auch irgendwann im spielfähigen Alter sein und offensichtlich hatten die jede Menge gute Freunde, denn Anfang der 70er sah unser Verein plötzlich ganz anders aus und hatte allen Grund, 1972 ordentlich auf sein 60-jähriges Bestehen anzustoßen.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── STORY 4B/5: 1975–Heute als eigene Bildsequenz ───── -->
+    <section class="seventies-sequence" data-year="1975">
+        <div class="seventies-sticky">
+            <div class="seventies-layer seventies-image13" id="seventiesImage13">
+                <img src="Bilder/13_Spadaka1.jpg" alt="Spadaka 1">
+                <div class="image-year pos-br">unbekannt</div>
+            </div>
+            <div class="seventies-layer seventies-image14" id="seventiesImage14">
+                <img src="Bilder/14_Trommlercorps1980_1.JPG" alt="Trommlercorps 1980">
+                <div class="image-year pos-br">1980</div>
+            </div>
+            <div class="seventies-layer seventies-image15" id="seventiesImage15">
+                <img src="Bilder/15_Trommlercorps1987_1.JPG" alt="Trommlercorps 1987">
+                <div class="image-year pos-bl">1987</div>
+            </div>
+
+            <div class="today-standalone today-underlay" id="todayUnderlay" aria-label="Heute – Festes Programm und lebendige Gemeinschaft">
+                <figure class="today-inline-image">
+                    <img src="Bilder/16_Trommlercorps2009.jpg" alt="Trommlercorps 2009">
+                    <div class="image-year pos-br">2009</div>
+                </figure>
+                <div class="text-inner">
+                    <div class="year">Heute</div>
+                    <h3>Festes Programm und lebendige Gemeinschaft</h3>
+                    <p>Nachdem wir schon seit 1913 das Schützenfest (Bronk) in Linnich verschönerten, kam im Jahr 1982 das Schützenfest in Korschenbroich (Unges Pengste) hinzu. Hier kommen wir genauso gern hin wie zu den tollen Festen in Venn (seit 1999) und Glehn (seit 2002), die seit vielen Jahren zu unserem festen Programm gehören:</p>
+                    <ul>
+                        <li>Pfingsten – klarer Fall, immer Korschenbroich</li>
+                        <li>eine Woche vorher – immer Brachelen</li>
+                        <li>eine Woche nachher – immer Linnich</li>
+                        <li>erstes Juli-Wochenende – Venn</li>
+                        <li>erstes September-Wochenende – Glehn</li>
+                        <li>letzter Januar-Sonntag (meistens) – St. Sebastianus</li>
+                    </ul>
+                    <p>Entscheidend sind für uns aber nach wie vor – wie schon vor 100 Jahren – unsere Aktivitäten in Brachelen. Hier fühlen wir uns besonders wohl, weil man sich hier besonders geschätzt fühlt. Brachelener wissen, was sie an uns haben; wir wissen, was wir an den Brachelenern haben.</p>
+                    <p>Also machen wir doch alle weiter so? Nicht so! Immer irgendwie anders, aber weiter. Und ich? Ja, ich bleib halt noch ein paar Jahre bei dem Haufen … so wie es 1966 schon gedacht war.</p>
+                </div>
+            </div>
+
+            <div class="seventies-final-image-layer" id="seventiesFinalImageLayer" aria-label="Trommlercorps beim Auftritt">
+                <img id="finalParallaxImage" src="Bilder/17_DSCF6907.jpg" alt="Trommlercorps beim Auftritt">
+                <div class="image-year pos-bc">2025</div>
+                <div class="final-image-copy final-image-copy-credit" id="finalTextCredit">
+                    <p>Der Text dieser Seite wurde von unserem Mitglied Willi Genotte anlässlich des 100-jährigen Jubiläums im Jahr 2012 verfasst.</p>
+                </div>
+            </div>
+
+            <div class="seventies-copy seventies-copy-3" id="seventiesText3">
+                <p>1975 gab es einen entscheidenden Einschnitt, weil wir nämlich auf das herkömmliche Notensystem „umtrainiert“ wurden. 1977 stiegen wir auch noch ins „Entsorgungsgeschäft“ ein, indem wir alle 2 Monate Brachelens Altpapier einsammelten. Jedenfalls versetzte uns diese Zusatzeinnahme in die komfortable Lage, in fast jedem Jahr einen Ausflug in die nähere oder weitere Umgebung unserer Heimat zu machen.</p>
+            </div>
+
+            <div class="seventies-copy seventies-copy-4" id="seventiesText4">
+                <p>Im Jahr 1996 hatte ich wieder einmal ein einschneidendes Erlebnis: „Mein“ Vorsitzender Hubert Kreutzer (ich hatte nie einen anderen gehabt!) ließ sich nicht mehr erweichen und gab dieses Amt in die Hände seines Neffen Reinhold, der unseren Verein seit diesem Jahr umsichtig führt.</p>
+            </div>
+        </div>
+        <div class="final-outro-stack" id="finalOutroStack">
+
+    <!-- ─── OUTRO ─────────────────────────────────────── -->
+    <section class="chronik-outro">
+        <p>Haben Sie Erinnerungen oder Fotos aus der Vereinsgeschichte?</p>
+        <p><a href="mailto:info@trommlercorps-brachelen.de">Wir freuen uns über Ihre Nachricht!</a></p>
+        <a class="btn" href="index.html">← Zurück zur Startseite</a>
+    </section>
+
+    <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-copy">© 2025 Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
+        <div class="footer-links">
+            <a href="mailto:info@trommlercorps-brachelen.de" class="footer-link">Kontaktieren</a>
+			<button class="footer-link" onclick="openModal('datenschutz')">Datenschutzerklärung</button>
+            <button class="footer-link" onclick="openModal('impressum')">Impressum</button>
+        </div>
+    </div>
+</footer>
+        </div>
+    </section>
+
+</div><!-- /.content -->
+
+
+<!-- ─── MODAL: DATENSCHUTZ ───────────────────────────────────── -->
+<div id="modal-datenschutz" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+        <h2>Datenschutzerklärung</h2>
+        <div class="modal-body">
+            <h3>1. Datenschutz auf einen Blick</h3>
+            <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+
+            <h3>Datenerfassung auf dieser Website</h3>
+            <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber, dessen Kontaktdaten dem Impressum zu entnehmen sind. Da es sich um eine rein statische HTML-Datei handelt, werden keine Daten serverseitig verarbeitet oder gespeichert.</p>
+            <p>Ihre Daten werden erhoben, indem Sie uns diese mitteilen, z.&nbsp;B. per E-Mail über die auf dieser Seite genannten Adressen.</p>
+
+            <h3>Ihre Rechte</h3>
+            <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten sowie ein Recht auf Berichtigung oder Löschung. Wenden Sie sich hierzu jederzeit an uns.</p>
+
+            <h3>2. Kontaktanfragen per E-Mail</h3>
+            <p>Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten zum Zwecke der Bearbeitung Ihres Anliegens gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO.</p>
+
+            <h3>Verantwortliche Stelle</h3>
+            <p>
+                Trommler- und Pfeifercorps 1912 Brachelen e.V.<br>
+                1. Vorsitzender: Reinhold Kreutzer<br>
+                Schüngeler Weg 1a, 41836 Hückelhoven<br>
+                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+
+            <h3>Beschwerderecht</h3>
+            <p>Im Falle von Verstößen gegen die DSGVO steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu, insbesondere in dem Mitgliedstaat Ihres gewöhnlichen Aufenthalts.</p>
+
+            <p style="margin-top:1.4rem;font-size:.8rem;color:#aaa;">Quelle: e-recht24.de</p>
+        </div>
+    </div>
+</div>
+
+<!-- ─── MODAL: IMPRESSUM ─────────────────────────────────────── -->
+<div id="modal-impressum" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('impressum')">×</button>
+        <h2>Impressum</h2>
+        <div class="modal-body">
+            <h3>Herausgeber</h3>
+            <p>Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
+
+            <h3>Vertreten durch</h3>
+            <p>
+                <strong>Reinhold Kreutzer</strong> – 1. Vorsitzender<br>
+                Schüngeler Weg 1A, 41836 Hückelhoven<br>
+                Telefon: <a href="tel:+4924624433">02462 4433</a><br>
+                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+            <p style="margin-top:.8rem">
+                <strong>Harald Brendgens</strong> – Geschäftsführer<br>
+                Alter Steinweg 20, 41836 Hückelhoven<br>
+                Telefon: <a href="tel:+492462906292">02462 2026500</a><br>
+                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+
+            <h3>1. Inhalt der Seiten</h3>
+			<p>Der Herausgeber und Autor übernimmt keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen. Haftungsansprüche gegen den Autor, gleich welcher Art, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden sind grundsätzlich ausgeschlossen.</p>
+			<p>Alle Angebote bzw. Termine und Ankündigungen sind freibleibend und unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.</p>
+
+            <h3>2. Verweise und Links</h3>
+            <p>Der Herausgeber bzw. der Autor dieser Seiten distanziert sich hiermit ausdrücklich von allen Inhalten aller gelinkten / verknüpften Seiten. Diese Feststellung gilt für alle innerhalb des eigenen Internetangebotes gesetzten Links und Verweise sowie für Fremdeinträge in vom Autor eingerichteten Gästebüchern, Diskussionsforen und Mailinglisten. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => {
+        if (e.target === o) { o.classList.remove('open'); document.body.style.overflow = ''; }
+    });
+});
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+        document.body.style.overflow = '';
+    }
+});
+
+// Story-Elemente für Einblendungen und Scrollanimationen
+const stories    = Array.from(document.querySelectorAll('.story'));
+const introStage        = document.querySelector('.intro-stage');
+const introFigureInner  = document.querySelector('.intro-figure-inner');
+const introOverlayInner = document.querySelector('.intro-overlay-inner');
+const scrollboxStories = Array.from(document.querySelectorAll('.story-scrollbox'));
+const overlayQuotes = Array.from(document.querySelectorAll('.fullscreen-quote'));
+const rebuildSequence = document.querySelector('.rebuild-sequence');
+const rebuildBasePanel = document.getElementById('rebuildBasePanel');
+const rebuildBgFade = document.getElementById('rebuildBgFade');
+const rebuildImage5 = document.getElementById('rebuildImage5');
+const rebuildQuote5 = document.getElementById('rebuildQuote5');
+const rebuildImage6Wrap = document.getElementById('rebuildImage6Wrap');
+const rebuildQuote6 = document.getElementById('rebuildQuote6');
+const outroImageSequence = document.querySelector('.outro-image-sequence');
+const outroImageLayer = document.getElementById('outroImageLayer');
+const outroQuote8 = document.getElementById('outroQuote8');
+const outroFollowText = document.getElementById('outroFollowText');
+const sixtiesSequence = document.querySelector('.sixties-sequence');
+const sixtiesImage10 = document.getElementById('sixtiesImage10');
+const sixtiesImage11 = document.getElementById('sixtiesImage11');
+const sixtiesImage12 = document.getElementById('sixtiesImage12');
+const sixtiesText1 = document.getElementById('sixtiesText1');
+const sixtiesText2 = document.getElementById('sixtiesText2');
+const seventiesSequence = document.querySelector('.seventies-sequence');
+const seventiesImage13 = document.getElementById('seventiesImage13');
+const seventiesImage14 = document.getElementById('seventiesImage14');
+const seventiesImage15 = document.getElementById('seventiesImage15');
+const seventiesText3 = document.getElementById('seventiesText3');
+const seventiesText4 = document.getElementById('seventiesText4');
+const todayUnderlay = document.getElementById('todayUnderlay');
+const seventiesFinalImageLayer = document.getElementById('seventiesFinalImageLayer');
+const finalImageSequence = document.getElementById('finalImageSequence');
+const finalImageSticky = document.getElementById('finalImageSticky');
+const finalParallaxImage = document.getElementById('finalParallaxImage');
+const finalOutroStack = document.getElementById('finalOutroStack');
+const todayFinalText = document.getElementById('todayFinalText');
+const finalTextCredit = document.getElementById('finalTextCredit');
+
+
+// ─── Text einblenden, sobald Story sichtbar ───
+const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        const text = e.target.querySelector('.story-text');
+        if (e.isIntersecting && text) text.classList.add('visible');
+    });
+}, { threshold: 0.25 });
+stories.forEach(s => obs.observe(s));
+
+// ─── Overlays auf den Vollbildern weich ein-/ausblenden ───
+const overlayObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        e.target.classList.toggle('visible', e.isIntersecting && e.intersectionRatio > 0.22);
+    });
+}, { threshold: [0, 0.22, 0.55] });
+overlayQuotes.forEach(section => overlayObs.observe(section));
+
+// ─── Scroll-Logik ───
+function smoothstep(edge0, edge1, x) {
+    let t = Math.min(Math.max((x - edge0) / (edge1 - edge0), 0), 1);
+    return t * t * (3 - 2 * t);
+}
+
+function onScroll() {
+    const vh = window.innerHeight;
+
+    // Intro: Bild wird beim Scrollen nach oben "weggezogen" und gibt
+    //        den dahinterliegenden Text frei. Overlay-Text bleibt an
+    //        seiner Position, wird leicht kleiner und blendet aus.
+    if (introStage && introFigureInner) {
+        const stageRect = introStage.getBoundingClientRect();
+        const liftRange = vh * 0.85;    // 85% Viewport-Scroll bis Bild voll weggezogen
+        let p = Math.min(Math.max(-stageRect.top / liftRange, 0), 1);
+        introFigureInner.style.transform = 'translateY(' + (-p * vh).toFixed(0) + 'px)';
+
+        if (introOverlayInner) {
+            const fadeP = Math.min(p * 1.25, 1);    // Overlay etwas schneller weg
+            introOverlayInner.style.opacity = (1 - fadeP).toFixed(2);
+            introOverlayInner.style.transform = 'scale(' + (1 - fadeP * 0.1).toFixed(3) + ')';
+        }
+    }
+
+
+    // Story 2: Text innerhalb der Box mit dem Seiten-Scroll bewegen.
+    // Gleichzeitig werden die drei Hintergrundbilder weich überblendet.
+    scrollboxStories.forEach(story => {
+        const box = story.querySelector('.story-text .text-inner');
+        const content = story.querySelector('.scrollbox-content');
+        const fadeImages = Array.from(story.querySelectorAll('.fade-image'));
+        const fadeYears = Array.from(story.querySelectorAll('.fade-year'));
+        if (!box || !content) return;
+
+        const rect = story.getBoundingClientRect();
+        const scrollRange = Math.max(rect.height - vh, 1);
+        let p = Math.min(Math.max(-rect.top / scrollRange, 0), 1);
+
+        // Extra-Endweg, damit die letzte Zeile nicht im unteren Verlauf verschwindet.
+        const maxShift = Math.max(content.scrollHeight - box.clientHeight + 90, 0);
+        content.style.transform = 'translateY(' + (-p * maxShift).toFixed(0) + 'px)';
+
+        if (fadeImages.length) {
+            const smooth = (edge0, edge1, x) => {
+                let t = Math.min(Math.max((x - edge0) / (edge1 - edge0), 0), 1);
+                return t * t * (3 - 2 * t);
+            };
+            const fadeToSecond = smooth(0.18, 0.40, p);
+            const fadeToThird  = smooth(0.58, 0.80, p);
+
+            if (fadeImages[0]) fadeImages[0].style.opacity = (1 - fadeToSecond).toFixed(3);
+            if (fadeImages[1]) fadeImages[1].style.opacity = (fadeToSecond * (1 - fadeToThird)).toFixed(3);
+            if (fadeImages[2]) fadeImages[2].style.opacity = fadeToThird.toFixed(3);
+            if (fadeYears[0]) fadeYears[0].style.opacity = (1 - fadeToSecond).toFixed(3);
+            if (fadeYears[1]) fadeYears[1].style.opacity = (fadeToSecond * (1 - fadeToThird)).toFixed(3);
+            if (fadeYears[2]) fadeYears[2].style.opacity = fadeToThird.toFixed(3);
+        }
+    });
+
+    // STORY 3: Grundtext bleibt oben lesbar, blendet dann aus.
+    // Bild 5 fährt darüber, Bild 6 steigt auf, danach folgen 7 und 8 ohne sichtbare Lücke.
+    if (rebuildSequence && rebuildImage5 && rebuildImage6Wrap) {
+        const rect = rebuildSequence.getBoundingClientRect();
+        const range = Math.max(rect.height - vh, 1);
+        const p = Math.min(Math.max(-rect.top / range, 0), 1);
+
+        const baseFade = 1 - smoothstep(0.09, 0.17, p);
+        const bgFadeIn = smoothstep(0.10, 0.20, p);
+        const bgFade = bgFadeIn;
+        const enter5 = smoothstep(0.035, 0.125, p);
+        const dim5 = smoothstep(0.30, 0.46, p);
+        const quote5Fade = 1 - smoothstep(0.34, 0.48, p);
+        const rise6 = smoothstep(0.38, 0.58, p);
+        const quote6In = smoothstep(0.44, 0.54, p);
+
+        if (rebuildBasePanel) rebuildBasePanel.style.opacity = baseFade.toFixed(3);
+        if (rebuildBgFade) rebuildBgFade.style.opacity = bgFade.toFixed(3);
+
+        // Bild 5 kommt früher nach dem Grundtext und bleibt anschließend transparent stehen.
+        // Bild 5 und Bild 6 werden am Ende gemeinsam durch den natürlichen Seiten-Scroll herausgeschoben.
+        const y5 = (1 - enter5) * vh;
+        rebuildImage5.style.transform = 'translateY(' + y5.toFixed(1) + 'px)';
+        rebuildImage5.style.opacity = (1 - dim5 * 0.68).toFixed(3);
+        if (rebuildQuote5) {
+            rebuildQuote5.style.opacity = (enter5 * quote5Fade).toFixed(3);
+            rebuildQuote5.style.transform = 'translateY(' + ((1 - enter5) * 26).toFixed(1) + 'px)';
+        }
+
+        const x6 = (1 - rise6) * -0.15 * window.innerWidth;
+        const y6Curve = (1 - rise6) * (1 - rise6) * 0.92 * vh;
+        rebuildImage6Wrap.style.transform = 'translate(' + x6.toFixed(1) + 'px, ' + y6Curve.toFixed(1) + 'px)';
+        rebuildImage6Wrap.style.opacity = Math.min(Math.max(rise6 * 1.2, 0), 1).toFixed(3);
+
+        if (rebuildQuote6) {
+            // Der Text bleibt sichtbar und wird am Ende mit der Sticky-Bühne nach oben weggeschoben.
+            rebuildQuote6.style.opacity = quote6In.toFixed(3);
+            rebuildQuote6.style.transform = 'translateY(' + ((1 - quote6In) * 24).toFixed(1) + 'px)';
+        }
+    }
+
+    // STORY 3: Letztes Bild wird transparent, der Abschlusstext scrollt darüber
+    // und verlässt die Bühne anschließend gemeinsam mit dem Bild.
+    if (outroImageSequence && outroImageLayer && outroFollowText) {
+        const rect = outroImageSequence.getBoundingClientRect();
+        const range = Math.max(rect.height - vh, 1);
+        const p = Math.min(Math.max(-rect.top / range, 0), 1);
+
+        const quoteIn = 1;
+        const quoteOut = 1 - smoothstep(0.40, 0.50, p);
+        const imageFade = smoothstep(0.38, 0.58, p);
+        const textRise = smoothstep(0.44, 0.70, p);
+
+        // Bild 8 bleibt am Ende transparent sichtbar. Zitat und Abschlusstext
+        // blenden nicht mehr aus, sondern verlassen die Szene gemeinsam mit dem Bild.
+        outroImageLayer.style.opacity = (1 - imageFade * 0.72).toFixed(3);
+        outroImageLayer.style.transform = 'translateY(0px)';
+
+        if (outroQuote8) {
+            // Der Text fährt mit Bild 8 in die Szene und verschwindet, sobald der Folgetext sichtbar wird.
+            const quote8Opacity = quoteIn * quoteOut;
+            outroQuote8.style.opacity = quote8Opacity.toFixed(3);
+            outroQuote8.style.transform = 'translateY(' + ((1 - quoteIn) * 24).toFixed(1) + 'px)';
+        }
+
+        const textY = (1 - textRise) * vh * 0.78;
+        outroFollowText.style.transform = 'translateY(' + textY.toFixed(1) + 'px)';
+        outroFollowText.style.opacity = Math.min(Math.max((textRise - 0.05) / 0.95, 0), 1).toFixed(3);
+    }
+
+    // STORY 4A: 1960er Sequenz.
+    // Bild 9 ist die Basis, Bild 10 blendet weich darüber.
+    // Bild 11 bleibt bis kurz vor dem Wipe unsichtbar, damit es Bild 9 nicht verdeckt.
+    // Beim Wipe wird Bild 10 exakt an derselben horizontalen Linie weggeclippt,
+    // an der Text 1 verschwindet und Text 2 unten rechts sichtbar wird.
+    // Bild 12 blendet weich darüber ein und verlässt die Szene zusammen mit Text 2
+    // durch das natürliche Ende des Sticky-Blocks.
+    if (sixtiesSequence && sixtiesImage10 && sixtiesImage11 && sixtiesImage12 && sixtiesText1 && sixtiesText2) {
+        const rect = sixtiesSequence.getBoundingClientRect();
+        const range = Math.max(rect.height - vh, 1);
+        const p = Math.min(Math.max(-rect.top / range, 0), 1);
+
+        const fadeTo10 = smoothstep(0.16, 0.31, p);
+        const prepare11 = smoothstep(0.36, 0.41, p);
+        const wipeTo11 = smoothstep(0.42, 0.62, p);
+        const fadeTo12 = smoothstep(0.70, 0.84, p);
+
+        sixtiesImage10.style.opacity = fadeTo10.toFixed(3);
+        sixtiesImage11.style.opacity = prepare11.toFixed(3);
+        sixtiesImage10.style.clipPath = 'inset(0 0 ' + (wipeTo11 * 100).toFixed(2) + '% 0)';
+        sixtiesImage12.style.opacity = fadeTo12.toFixed(3);
+
+        // Gemeinsame globale Wipe-Linie: Bild 10 bleibt oberhalb sichtbar,
+        // Bild 11 und Text 2 werden unterhalb sichtbar. Die Text-Clips werden
+        // in Pixeln berechnet, damit die Linie nicht relativ zur Textbox läuft,
+        // sondern exakt auf der Bild-Wipe-Linie liegt.
+        const wipeY = vh * (1 - wipeTo11);
+        const clipToWipeLine = (el, revealBelow) => {
+            const r = el.getBoundingClientRect();
+            const h = Math.max(r.height, 1);
+            const clampPx = (value) => Math.min(Math.max(value, 0), h);
+
+            if (revealBelow) {
+                const topClip = clampPx(wipeY - r.top);
+                el.style.clipPath = 'inset(' + topClip.toFixed(1) + 'px 0 0 0)';
+            } else {
+                const bottomClip = clampPx(r.bottom - wipeY);
+                el.style.clipPath = 'inset(0 0 ' + bottomClip.toFixed(1) + 'px 0)';
+            }
+        };
+
+        clipToWipeLine(sixtiesText1, false);
+        clipToWipeLine(sixtiesText2, true);
+    }
+
+    // STORY 4B/5: 1975–Heute Sequenz.
+    // Bild 13 liegt direkt unter Bild 12 und fährt nicht erst aus einer weißen Fläche ein.
+    // Bild 15 wird ohne Opacity-Fade von unten hochgeschoben. Danach wischt Bild 16
+    // von unten nach oben darüber; erst anschließend wird der Heute-Text hochgeschoben.
+    if (seventiesSequence && seventiesImage13 && seventiesImage14 && seventiesImage15 && seventiesText3 && seventiesText4) {
+        const rect = seventiesSequence.getBoundingClientRect();
+        const range = Math.max(rect.height - vh, 1);
+        const p = Math.min(Math.max(-rect.top / range, 0), 1);
+
+        const fadeTo14 = smoothstep(0.18, 0.32, p);
+        const swapTo15 = smoothstep(0.40, 0.60, p);
+        const wipeTo16 = smoothstep(0.66, 0.78, p);
+
+        const oldY = -swapTo15 * vh;
+        const newY = (1 - swapTo15) * vh;
+
+        seventiesImage13.style.transform = 'translateY(' + oldY.toFixed(1) + 'px)';
+        seventiesImage14.style.transform = 'translateY(' + oldY.toFixed(1) + 'px)';
+        seventiesText3.style.transform = 'translateY(' + oldY.toFixed(1) + 'px)';
+
+        seventiesImage14.style.opacity = fadeTo14.toFixed(3);
+
+        seventiesImage15.style.transform = 'translateY(' + newY.toFixed(1) + 'px)';
+        seventiesImage15.style.opacity = '1';
+        seventiesImage15.style.clipPath = 'inset(0 0 0 0)';
+        seventiesText4.style.transform = 'translateY(' + newY.toFixed(1) + 'px)';
+        seventiesText4.style.opacity = '1';
+        seventiesText4.style.clipPath = 'inset(0 0 0 0)';
+
+        // Übergang zu Heute: Bild 16 wischt von unten nach oben über Bild 15.
+        // Erst wenn Bild 16 vollständig steht, wird der Heute-Text nach oben geschoben.
+        if (todayUnderlay) {
+            const todayTextScroll = smoothstep(0.82, 0.90, p);
+            const fixedTextShift = vh;
+            const clipTop = (1 - wipeTo16) * 100;
+            todayUnderlay.style.clipPath = 'inset(' + clipTop.toFixed(2) + '% 0 0 0)';
+            todayUnderlay.style.transform = 'translateY(' + (-todayTextScroll * fixedTextShift).toFixed(1) + 'px)';
+        }
+
+        if (seventiesFinalImageLayer && finalParallaxImage) {
+            // Bild 17 fährt zuerst vollständig von unten über den stehenden Text.
+            // Danach wird es auf Weiß transparent; währenddessen erscheint der Credit oben mittig.
+            // Outro und Footer liegen wieder als absolute Schluss-Ebene am Ende der Sequenz
+            // und werden dadurch im selben Abschnitt von unten hochgeschoben.
+            const finalEnter = smoothstep(0.925, 0.965, p);
+            const imageFade = smoothstep(0.968, 0.992, p);
+            const creditIn = smoothstep(0.970, 0.990, p);
+            const finalLayerY = (1 - finalEnter) * vh;
+            const finalScale = 1.05 - finalEnter * 0.05;
+            const creditY = (1 - creditIn) * 24 - imageFade * 6;
+
+            seventiesFinalImageLayer.style.transform = 'translateY(' + finalLayerY.toFixed(1) + 'px)';
+            seventiesFinalImageLayer.style.opacity = finalEnter > 0 ? '1' : '0';
+            seventiesFinalImageLayer.style.setProperty('--final-white-opacity', (imageFade * 0.72).toFixed(3));
+            finalParallaxImage.style.transform = 'scale(' + finalScale.toFixed(3) + ')';
+            finalParallaxImage.style.opacity = (1 - imageFade * 0.58).toFixed(3);
+
+            if (finalTextCredit) {
+                finalTextCredit.style.opacity = creditIn.toFixed(3);
+                finalTextCredit.style.transform = 'translate(-50%, ' + creditY.toFixed(1) + 'px)';
+            }
+        }
+    }
+
+    // Bilder der normalen Story-Blöcke: "von hinten" heranzoomen.
+    // Story 2 ist ausgenommen, weil sie als stehendes Bild ohne Zoom arbeitet.
+    stories.forEach(story => {
+        const fig = story.querySelector('.story-figure');
+        const img = fig.querySelector('img');
+        if (!img) return;
+        if (story.classList.contains('story-scrollbox')) {
+            story.querySelectorAll('.story-figure img').forEach(i => i.style.transform = 'none');
+            return;
+        }
+        const rect = fig.getBoundingClientRect();
+        // Phase 1: Bild kommt von unten herein und zoomt von .55 auf 1.0 heran,
+        //          bis die Figur oben am Viewport "andockt" (sticky greift).
+        // rect.top geht von +vh (ganz unten) bis 0 (angedockt).
+        let zoomProgress = 1 - (rect.top / vh);     // 0 = noch unten, 1 = angedockt
+        zoomProgress = Math.min(Math.max(zoomProgress, 0), 1);
+        let scale;
+        if (rect.top > 0) {
+            // Heranzoom-Phase: von 0.55 auf 1.0
+            scale = 0.55 + zoomProgress * 0.45;
+        } else {
+            // Sticky-Phase: dezenter Weiterzoom von 1.0 auf 1.12
+            const stickyProgress = Math.min(Math.max(-rect.top / rect.height, 0), 1);
+            scale = 1.0 + stickyProgress * 0.12;
+        }
+        img.style.transform = 'scale(' + scale.toFixed(3) + ')';
+    });
+}
+
+let ticking = false;
+function requestTick() {
+    if (!ticking) { ticking = true; requestAnimationFrame(() => { onScroll(); ticking = false; }); }
+}
+window.addEventListener('scroll', requestTick, { passive: true });
+window.addEventListener('resize', requestTick);
+onScroll();
+</script>
+
+</body>
+</html>

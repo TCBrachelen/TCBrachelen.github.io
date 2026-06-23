@@ -1,1 +1,816 @@
-test
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trommler- und Pfeifercorps 1912 Brachelen e.V.</title>
+	<link rel="icon" type="image/png" href="CoA_Brachelen.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            /* Uniform-Palette: Marineblau + Hellblau + Silber/Weiß + Rot + Messing */
+            --blue-dark:    #0b1f36;
+            --blue-mid:     #14365a;
+            --blue-light:   #2f5f8a;
+            --blue-pale:    #dbeaf3;
+            --shirt-blue:   #9fc7df;
+            --shirt-light:  #c9deeb;
+            --red:          #b51f2a;
+            --red-dark:     #7f1720;
+            --gold:         #b8943a;
+            --gold-light:   #d2b86a;
+            --silver:       #c6ccd0;
+            --cream:        #f4f1e8;
+            --cream-dark:   #e6ded0;
+            --white:        #ffffff;
+            --text:         #101820;
+            --text-muted:   #58636d;
+            --border:       #ccd3d8;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Lora', Georgia, serif;
+            color: var(--text);
+            background: var(--cream);
+            line-height: 1.75;
+            overflow-x: hidden;
+        }
+
+        /* ─── HERO ──────────────────────────────────────────────── */
+		.hero {
+            background: url('Bilder/17_DSCF6907.jpg') center center / cover no-repeat;
+            color: #e8f2f8;
+            padding: 5.5rem 2rem 5rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 85%, rgba(184,148,58,.12) 0%, transparent 52%),
+                radial-gradient(ellipse at 85% 10%, rgba(181,31,42,.1) 0%, transparent 48%),
+                linear-gradient(155deg, rgba(11,31,54,.88) 0%, rgba(20,54,90,.80) 55%, rgba(47,95,138,.72) 100%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 56px;
+            background: var(--cream);
+            clip-path: polygon(0 100%, 100% 0, 100% 100%);
+        }
+        .hero-inner {
+            max-width: 760px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-emblem {
+            display: inline-block;
+            font-family: 'Lora', serif;
+            font-size: .78rem;
+            font-style: italic;
+            letter-spacing: .16em;
+            color: var(--gold-light);
+            border: 1px solid rgba(184,148,58,.4);
+            padding: .35rem 1.1rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp .6s ease-out both;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -.02em;
+            margin-bottom: 1.2rem;
+            animation: fadeInUp .7s ease-out .1s both;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold-light); }
+        .hero-rule {
+            width: 60px; height: 2px;
+            background: var(--gold);
+            margin: 1.6rem auto;
+            opacity: .6;
+            animation: fadeInUp .6s ease-out .15s both;
+        }
+        .hero-sub {
+            font-size: clamp(.95rem, 2vw, 1.15rem);
+            opacity: .8;
+            max-width: 520px;
+            margin: 0 auto;
+            animation: fadeInUp .7s ease-out .2s both;
+        }
+
+        /* ─── NAV ───────────────────────────────────────────────── */
+        .nav {
+            background: var(--white);
+            border-bottom: 2px solid var(--border);
+            position: sticky; top: 0; z-index: 200;
+            box-shadow: 0 2px 18px rgba(11,31,54,.1);
+            animation: slideDown .6s ease-out .3s both;
+        }
+        .nav-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .nav-inner::-webkit-scrollbar { display: none; }
+        .nav-item {
+            padding: 1.1rem 1.4rem;
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Lora', serif;
+            font-size: .88rem;
+            letter-spacing: .04em;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: color .25s, border-color .25s;
+        }
+        .nav-item:hover, .nav-item.active {
+            color: var(--blue-mid);
+            border-bottom-color: var(--gold);
+        }
+
+        /* ─── SHARED ────────────────────────────────────────────── */
+        .container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+        section { padding: 5.5rem 0 4.5rem; text-align: center; }
+        section + section { border-top: 1px solid var(--border); }
+
+        .section-label {
+            display: block;
+            font-family: 'Lora', serif;
+            font-size: .73rem;
+            font-style: italic;
+            letter-spacing: .2em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: .7rem;
+        }
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700;
+            color: var(--blue-dark);
+            line-height: 1.15;
+            letter-spacing: -.015em;
+            margin-bottom: .8rem;
+        }
+        .section-rule {
+            width: 52px; height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+            margin: .8rem auto 0;
+        }
+        .lead {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 1.4rem auto 0;
+            max-width: 580px;
+        }
+
+        /* reveal */
+        .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal.d1 { transition-delay: .1s; }
+        .reveal.d2 { transition-delay: .2s; }
+        .reveal.d3 { transition-delay: .3s; }
+        .reveal.d4 { transition-delay: .4s; }
+
+        /* ─── INSTAGRAM ─────────────────────────────────────────── */
+        .insta-post-card {
+            margin: 2.8rem auto 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            background: var(--white);
+            border: 1px solid var(--border);
+            text-align: left;
+            overflow: hidden;
+            position: relative;
+        }
+        .insta-post-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+            z-index: 2;
+        }
+        .insta-post-media {
+            position: relative;
+            min-height: 240px;
+            background: linear-gradient(150deg, var(--blue-mid) 0%, var(--blue-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .insta-post-media::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 85%, rgba(184,148,58,.25) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 15%, rgba(181,31,42,.2) 0%, transparent 50%);
+        }
+        .insta-post-media svg {
+            position: relative;
+            width: 46px; height: 46px;
+            fill: rgba(232,242,248,.55);
+        }
+        .insta-post-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            width: 30px; height: 30px;
+            border-radius: 9px;
+            background: linear-gradient(135deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .insta-post-badge svg { width: 16px; height: 16px; fill: white; }
+        .insta-post-content {
+            padding: 1.8rem 1.7rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .insta-post-header {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            margin-bottom: 1rem;
+        }
+        .insta-avatar {
+            flex-shrink: 0;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: .78rem;
+            color: white;
+        }
+        .insta-username {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: .92rem;
+            color: var(--blue-dark);
+        }
+        .insta-post-date { font-size: .74rem; color: var(--text-muted); }
+        .insta-post-caption {
+            font-size: .88rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+            margin-bottom: .9rem;
+        }
+        .insta-post-likes {
+            font-size: .78rem;
+            color: var(--gold);
+            font-style: italic;
+        }
+        .insta-btn-wrap { margin-top: 2.2rem; }
+
+        /* buttons */
+        .btn {
+            display: inline-block;
+            padding: .55rem 1.5rem;
+            font-family: 'Lora', serif;
+            font-size: .88rem;
+            letter-spacing: .03em;
+            text-decoration: none;
+            cursor: pointer; border: none;
+            transition: background .22s, color .22s, transform .15s;
+        }
+        .btn-primary { background: var(--blue-mid); color: #e8f2f8; }
+        .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+        .btn-secondary { background: transparent; color: var(--blue-mid); border: 1.5px solid var(--blue-mid); }
+        .btn-secondary:hover { background: var(--blue-pale); transform: translateY(-1px); }
+
+        /* ─── WER WIR SIND ──────────────────────────────────────── */
+        .fact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.4rem;
+            margin-top: 2.8rem;
+            text-align: center;
+        }
+        .fact-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 1.8rem;
+            position: relative;
+        }
+        .fact-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+        }
+        .fact-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; font-weight: 800;
+            color: var(--blue-light); opacity: .2;
+            line-height: 1; margin-bottom: .3rem;
+        }
+        .fact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; font-weight: 700;
+            color: var(--blue-dark); margin-bottom: .5rem;
+        }
+        .fact-body { font-size: .88rem; color: var(--text-muted); line-height: 1.7; }
+
+        .about-text {
+            margin: 2.2rem auto 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+            max-width: 700px;
+        }
+        .chronik-btn-wrap { margin-top: 2.2rem; }
+
+        /* ─── UNTERSTÜTZEN ──────────────────────────────────────── */
+        .support-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.4rem;
+            margin-top: 2.8rem;
+            text-align: center;
+        }
+        .fact-card .btn-primary { margin-top: .9rem; }
+
+        /* ─── INTERN ────────────────────────────────────────────── */
+        .intern-box {
+            margin: 2.8rem auto 0;
+            max-width: 480px;
+            background: var(--white);
+            border: 1.5px dashed var(--border);
+            padding: 3rem 2.5rem;
+        }
+        .lock-icon { width: 40px; height: 40px; margin: 0 auto 1rem; color: #ccc; }
+        #intern h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text-muted); margin-bottom: .4rem; }
+        #intern p { font-size: .9rem; color: #aaa; }
+
+        /* ─── MODALS ────────────────────────────────────────────── */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(20,40,26,.65);
+            z-index: 500;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 3rem 1rem;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--white);
+            max-width: 720px; width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: modalIn .3s ease-out both;
+        }
+        .modal-box::before {
+            content: '';
+            display: block; height: 4px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+            position: absolute; top: 0; left: 0; right: 0;
+        }
+        .modal-close {
+            position: absolute; top: 1.2rem; right: 1.4rem;
+            background: none; border: none; cursor: pointer;
+            font-size: 1.6rem; line-height: 1; color: var(--text-muted);
+            transition: color .2s;
+        }
+        .modal-close:hover { color: var(--blue-dark); }
+        .modal-box h2 { font-size: 1.9rem; text-align: left; margin-bottom: 1.6rem; }
+        .modal-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; color: var(--blue-dark);
+            margin: 1.6rem 0 .5rem;
+        }
+        .modal-body p, .modal-body ul {
+            font-size: .9rem; color: var(--text-muted);
+            line-height: 1.85; margin-bottom: .5rem;
+        }
+        .modal-body ul { padding-left: 1.5rem; }
+        .modal-body a { color: var(--blue-mid); }
+
+        /* timeline */
+        .timeline { margin-top: .5rem; }
+        .tl-item {
+            display: flex; gap: 1.5rem;
+            padding-bottom: 1.6rem;
+            position: relative;
+        }
+        .tl-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 84px; top: 28px; bottom: 0;
+            width: 1px; background: var(--border);
+        }
+        .tl-year {
+            flex-shrink: 0; width: 72px;
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; font-weight: 700;
+            color: var(--gold); padding-top: .12rem;
+        }
+        .tl-dot {
+            flex-shrink: 0; width: 10px; height: 10px;
+            border-radius: 50%; background: var(--red);
+            margin-top: .38rem; position: relative; z-index: 1;
+        }
+        .tl-content { flex: 1; }
+        .tl-title {
+            font-family: 'Playfair Display', serif;
+            font-size: .95rem; font-weight: 700;
+            color: var(--blue-dark); margin-bottom: .2rem;
+        }
+        .tl-text { font-size: .87rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
+
+        /* ─── FOOTER ────────────────────────────────────────────── */
+        .footer {
+            background: var(--blue-dark);
+            color: rgba(200,220,235,.65);
+            padding: 2.5rem 2rem;
+        }
+        .footer-inner {
+            max-width: 860px; margin: 0 auto;
+            display: flex; flex-wrap: wrap;
+            align-items: center; justify-content: space-between;
+            gap: 1rem;
+        }
+        .footer-copy { font-size: .82rem; }
+        .footer-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+        .footer-link {
+            background: none; border: none;
+            color: rgba(200,220,235,.5);
+            font-family: 'Lora', serif; font-size: .82rem;
+            cursor: pointer; padding: 0;
+            transition: color .2s;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .footer-link:hover { color: var(--gold-light); }
+
+        /* ─── ANIMATIONS ────────────────────────────────────────── */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+        @keyframes modalIn { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
+
+        /* ─── RESPONSIVE ────────────────────────────────────────── */
+        @media (max-width: 600px) {
+            .hero { padding: 4rem 1.5rem 3.5rem; }
+            section { padding: 3.5rem 0 3rem; }
+            .container { padding: 0 1.2rem; }
+            .insta-post-card { grid-template-columns: 1fr; }
+            .insta-post-media { min-height: 160px; }
+            .support-grid { grid-template-columns: 1fr; }
+            .modal-box { padding: 2rem 1.4rem; }
+            .nav-inner { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── HERO ──────────────────────────────────────────────────── -->
+<header class="hero">
+    <div class="hero-inner">
+        <div class="hero-emblem">gegründet 1912 · Brachelen</div>
+        <h1>Trommler- und<br><em>Pfeifercorps</em><br>Brachelen</h1>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">Tradition, Gemeinschaft und Musik – seit über einem Jahrhundert im Herzen des Ortes.</p>
+    </div>
+</header>
+
+<!-- ─── NAV ──────────────────────────────────────────────────── -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a class="nav-item" href="#instagram">Aktuelles</a>
+        <a class="nav-item" href="#about">Wer wir sind</a>
+        <a class="nav-item" href="#unterstuetzen">Unterstützen</a>
+    </div>
+</nav>
+
+<!-- ─── INSTAGRAM ────────────────────────────────────────────── -->
+<section id="instagram">
+    <div class="container">
+        <span class="section-label reveal">Folge uns auf Social Media</span>
+        <h2 class="reveal d1">Aktuelles</h2>
+        <div class="section-rule reveal d2"></div>
+        <p class="lead reveal d3">Aktuelle Einblicke in unser Vereinsleben – direkt auf Instagram.</p>
+
+        <!-- TODO: Bildbereich durch Foto des aktuellsten Beitrags ersetzen (z. B. style="background-image:url('...')"), Bildunterschrift und Datum entsprechend anpassen -->
+        <div class="insta-post-card reveal d3">
+            <div class="insta-post-media">
+                <div class="insta-post-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </div>
+                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            </div>
+            <div class="insta-post-content">
+                <div class="insta-post-header">
+                    <div class="insta-avatar">TC</div>
+                    <div>
+                        <div class="insta-username">@tc_brachelen</div>
+                        <div class="insta-post-date">Neuester Beitrag</div>
+                    </div>
+                </div>
+                <p class="insta-post-caption">
+                    Tolle Stimmung beim letzten Auftritt! Vielen Dank an alle, die dabei waren und uns unterstützt haben. 🥁🎶
+            </div>
+        </div>
+
+        <div class="insta-btn-wrap reveal d4">
+            <a class="btn btn-secondary" href="https://www.instagram.com/tc_brachelen/" target="_blank" rel="noopener">Profil besuchen →</a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── WER WIR SIND ─────────────────────────────────────────── -->
+<section id="about">
+    <div class="container">
+        <span class="section-label reveal">Geschichte &amp; Gemeinschaft</span>
+        <h2 class="reveal d1">Wer wir sind</h2>
+        <div class="section-rule reveal d2"></div>
+
+        <div class="fact-grid">
+            <div class="fact-card reveal d1">
+                <div class="fact-num">1912</div>
+                <div class="fact-title">Über 110 Jahre Tradition</div>
+                <div class="fact-body">Gegründet im Jahr 1912 verbindet das Trommler- und Pfeifercorps Brachelen Generationen von Musikerinnen und Musikern.</div>
+            </div>
+            <div class="fact-card reveal d2">
+                <div class="fact-num">♪</div>
+                <div class="fact-title">Musik &amp; Brauchtum</div>
+                <div class="fact-body">Schützenfeste, Kirmes, Zapfenstreiche – wir begleiten das gesellschaftliche Leben in Brachelen und der ganzen Region.</div>
+            </div>
+            <div class="fact-card reveal d3">
+                <div class="fact-num">e.V.</div>
+                <div class="fact-title">Eingetragener Verein</div>
+                <div class="fact-body">Als gemeinnütziger Verein sind wir offen für alle, die Freude an Musik, Gemeinschaft und Tradition haben.</div>
+            </div>
+        </div>
+
+        <p class="about-text reveal d2">
+            Das Trommler- und Pfeifercorps 1912 Brachelen e.V. ist ein fester Bestandteil der örtlichen Vereinslandschaft.
+            Wir begleiten Schützenbruderschaften, treten bei Dorffesten auf und pflegen aktiv die
+            musikalische Tradition unserer Heimat. Ob jung oder alt – bei uns ist jeder willkommen, der Lust auf
+            gemeinschaftliches Musizieren hat.
+        </p>
+
+        <div class="chronik-btn-wrap reveal d3">
+            <a class="btn btn-secondary" href="chronik.html">Chronik lesen →</a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── UNTERSTÜTZEN ─────────────────────────────────────────── -->
+<section id="unterstuetzen">
+    <div class="container">
+        <span class="section-label reveal">Mitmachen &amp; Helfen</span>
+        <h2 class="reveal d1">Unterstützen</h2>
+        <div class="section-rule reveal d2"></div>
+        <p class="lead reveal d3">Auf diesen Wegen können Sie den Verein unterstützen oder Ihre Daten aktuell halten.</p>
+
+        <div class="support-grid">
+            <div class="fact-card reveal d1">
+                <div class="fact-num">♥</div>
+                <div class="fact-title">Passives Mitglied werden</div>
+                <div class="fact-body">
+                    Sie möchten den Verein unterstützen, ohne aktiv mitzuspielen? Als passives Mitglied tragen Sie zur Erhaltung unserer Tradition bei.
+                </div>
+                <a class="btn btn-primary" href="2019-05-10_Antrag auf passive Mitgliedschaft.pdf" target="_blank" rel="noopener">Jetzt unterstützen →</a>
+            </div>
+
+            <div class="fact-card reveal d2">
+                <div class="fact-num">✉</div>
+                <div class="fact-title">Adressänderung</div>
+                <div class="fact-body">
+                    Sie sind passives Mitglied und möchten Ihre Adresse aktualisieren? Dann nutzen Sie gerne unser Formular.
+                </div>
+				<a class="btn btn-primary" href="2019-10-17_Adressänderung.pdf" target="_blank" rel="noopener">Adresse aktualisieren →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── FOOTER ───────────────────────────────────────────────── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-copy">© 2025 Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
+        <div class="footer-links">
+            <a href="mailto:info@trommlercorps-brachelen.de" class="footer-link">Kontaktieren</a>
+			<button class="footer-link" onclick="openModal('datenschutz')">Datenschutzerklärung</button>
+            <button class="footer-link" onclick="openModal('impressum')">Impressum</button>
+        </div>
+    </div>
+</footer>
+
+<!-- ─── MODAL: CHRONIK ───────────────────────────────────────── -->
+<div id="modal-chronik" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:680px">
+        <button class="modal-close" onclick="closeModal('chronik')">×</button>
+        <h2>Chronik</h2>
+        <div class="modal-body">
+            <p>Das Trommler- und Pfeifercorps 1912 Brachelen e.V. blickt auf eine über hundertjährige Geschichte zurück, die eng mit dem Leben des Ortes Brachelen und der umliegenden Region verbunden ist.</p>
+
+            <div class="timeline" style="margin-top:1.8rem">
+                <div class="tl-item">
+                    <div class="tl-year">1912</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">Gründung des Corps</div>
+                        <p class="tl-text">Im Jahr 1912 wird das Trommler- und Pfeifercorps Brachelen gegründet. Eine Handvoll begeisterter Musiker legt damit den Grundstein für eine lange Vereinstradition im Ort.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">1920er</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">Erste Auftritte &amp; Wachstum</div>
+                        <p class="tl-text">Der junge Verein begleitet erste Schützenfeste und Kirchenfeiern in Brachelen und den Nachbargemeinden. Die Mitgliederzahl wächst stetig.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">1939–45</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">Kriegsjahre &amp; Unterbrechung</div>
+                        <p class="tl-text">Wie viele Vereine ruht auch das Corps während des Zweiten Weltkrieges. Viele Mitglieder kehren nach Kriegsende nicht zurück.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">1950er</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">Wiederaufbau &amp; Neuanfang</div>
+                        <p class="tl-text">In der Nachkriegszeit nimmt das Corps seinen Betrieb wieder auf. Mit neuem Schwung und jungen Mitgliedern knüpft man an alte Traditionen an.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">1962</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">50-jähriges Jubiläum</div>
+                        <p class="tl-text">Das Corps feiert sein 50-jähriges Bestehen mit einem großen Festumzug in Brachelen. Zahlreiche befreundete Vereine nehmen an den Feierlichkeiten teil.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">1980er</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">Modernisierung &amp; Nachwuchs</div>
+                        <p class="tl-text">Das Corps investiert in neue Uniformen und Instrumente. Gezielte Nachwuchsarbeit sichert die Zukunft des Vereins.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">2012</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">100-jähriges Jubiläum</div>
+                        <p class="tl-text">Ein besonderes Jahr: Das Corps feiert sein 100-jähriges Bestehen mit einem mehrtägigen Jubiläumsfest. Ehrengäste aus der ganzen Region gratulieren dem traditionsreichen Verein.</p>
+                    </div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-year">Heute</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-content">
+                        <div class="tl-title">Lebendige Tradition</div>
+                        <p class="tl-text">Über 110 Jahre nach seiner Gründung ist das Trommler- und Pfeifercorps 1912 Brachelen e.V. ein aktiver Teil des Vereinslebens – mit regelmäßigen Auftritten bei Schützenfesten, Kirchenfeiern und Dorffesten in Brachelen und der Region.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p style="margin-top:1.6rem;font-size:.82rem;color:#aaa;font-style:italic;">
+                Die Chronik wird laufend ergänzt. Haben Sie Erinnerungen, Fotos oder Dokumente aus der Vereinsgeschichte? Wir freuen uns über Ihre Mitteilung:
+                <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ─── MODAL: DATENSCHUTZ ───────────────────────────────────── -->
+<div id="modal-datenschutz" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+        <h2>Datenschutzerklärung</h2>
+        <div class="modal-body">
+            <h3>1. Datenschutz auf einen Blick</h3>
+            <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+
+            <h3>Datenerfassung auf dieser Website</h3>
+            <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber, dessen Kontaktdaten dem Impressum zu entnehmen sind. Da es sich um eine rein statische HTML-Datei handelt, werden keine Daten serverseitig verarbeitet oder gespeichert.</p>
+            <p>Ihre Daten werden erhoben, indem Sie uns diese mitteilen, z.&nbsp;B. per E-Mail über die auf dieser Seite genannten Adressen.</p>
+
+            <h3>Ihre Rechte</h3>
+            <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten sowie ein Recht auf Berichtigung oder Löschung. Wenden Sie sich hierzu jederzeit an uns.</p>
+
+            <h3>2. Kontaktanfragen per E-Mail</h3>
+            <p>Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten zum Zwecke der Bearbeitung Ihres Anliegens gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO.</p>
+
+            <h3>Verantwortliche Stelle</h3>
+            <p>
+                Trommler- und Pfeifercorps 1912 Brachelen e.V.<br>
+                1. Vorsitzender: Reinhold Kreutzer<br>
+                Schüngeler Weg 1a, 41836 Hückelhoven<br>
+                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+
+            <h3>Beschwerderecht</h3>
+            <p>Im Falle von Verstößen gegen die DSGVO steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu, insbesondere in dem Mitgliedstaat Ihres gewöhnlichen Aufenthalts.</p>
+
+            <p style="margin-top:1.4rem;font-size:.8rem;color:#aaa;">Quelle: e-recht24.de</p>
+        </div>
+    </div>
+</div>
+
+<!-- ─── MODAL: IMPRESSUM ─────────────────────────────────────── -->
+<div id="modal-impressum" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('impressum')">×</button>
+        <h2>Impressum</h2>
+        <div class="modal-body">
+            <h3>Herausgeber</h3>
+            <p>Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
+
+            <h3>Vertreten durch</h3>
+            <p>
+                <strong>Reinhold Kreutzer</strong> – 1. Vorsitzender<br>
+                Schüngeler Weg 1A, 41836 Hückelhoven<br>
+                Telefon: <a href="tel:+4924624433">02462 4433</a><br>
+                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+            <p style="margin-top:.8rem">
+                <strong>Harald Brendgens</strong> – Geschäftsführer<br>
+                Alter Steinweg 20, 41836 Hückelhoven<br>
+                Telefon: <a href="tel:+492462906292">02462 2026500</a><br>
+                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
+            </p>
+
+            <h3>1. Inhalt der Seiten</h3>
+			<p>Der Herausgeber und Autor übernimmt keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen. Haftungsansprüche gegen den Autor, gleich welcher Art, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden sind grundsätzlich ausgeschlossen.</p>
+			<p>Alle Angebote bzw. Termine und Ankündigungen sind freibleibend und unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.</p>
+
+            <h3>2. Verweise und Links</h3>
+            <p>Der Herausgeber bzw. der Autor dieser Seiten distanziert sich hiermit ausdrücklich von allen Inhalten aller gelinkten / verknüpften Seiten. Diese Feststellung gilt für alle innerhalb des eigenen Internetangebotes gesetzten Links und Verweise sowie für Fremdeinträge in vom Autor eingerichteten Gästebüchern, Diskussionsforen und Mailinglisten. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        document.getElementById('modal-' + id).classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+        document.getElementById('modal-' + id).classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.modal-overlay').forEach(o => {
+        o.addEventListener('click', e => {
+            if (e.target === o) { o.classList.remove('open'); document.body.style.overflow = ''; }
+        });
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+            document.body.style.overflow = '';
+        }
+    });
+
+    // scroll reveal
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // active nav
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-item');
+    function updateNav() {
+        const y = window.pageYOffset + 130;
+        sections.forEach(s => {
+            if (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                const m = document.querySelector(`.nav-item[href="#${s.id}"]`);
+                if (m) m.classList.add('active');
+            }
+        });
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+</script>
+</body>
+</html>
