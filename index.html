@@ -191,92 +191,142 @@
         .reveal.d4 { transition-delay: .4s; }
 
         /* ─── INSTAGRAM ─────────────────────────────────────────── */
-        .insta-post-card {
+        .insta-grid {
             margin: 2.8rem auto 0;
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            background: var(--white);
-            border: 1px solid var(--border);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.4rem;
             text-align: left;
-            overflow: hidden;
-            position: relative;
         }
-        .insta-post-card::before {
+        .insta-card {
+            position: relative;
+            display: block;
+            min-height: 330px;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            border: 1px solid rgba(204,211,216,.92);
+            border-radius: 20px;
+            background: var(--blue-mid);
+            color: #e8f2f8;
+            text-decoration: none;
+            isolation: isolate;
+            box-shadow: 0 16px 32px rgba(11,31,54,.13);
+            transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+        }
+        .insta-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
+            top: 0; left: 0; right: 0;
+            height: 4px;
             background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
-            z-index: 2;
+            z-index: 4;
         }
-        .insta-post-media {
-            position: relative;
-            min-height: 240px;
-            background: linear-gradient(150deg, var(--blue-mid) 0%, var(--blue-light) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .insta-post-media::before {
+        .insta-card::after {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 20% 85%, rgba(184,148,58,.25) 0%, transparent 55%),
-                radial-gradient(ellipse at 80% 15%, rgba(181,31,42,.2) 0%, transparent 50%);
+                radial-gradient(ellipse at 18% 86%, rgba(184,148,58,.18) 0%, transparent 54%),
+                radial-gradient(ellipse at 86% 12%, rgba(181,31,42,.16) 0%, transparent 48%),
+                linear-gradient(155deg, rgba(11,31,54,.88) 0%, rgba(20,54,90,.82) 55%, rgba(47,95,138,.74) 100%);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            transition: opacity .34s ease;
         }
-        .insta-post-media svg {
-            position: relative;
-            width: 46px; height: 46px;
-            fill: rgba(232,242,248,.55);
+        .insta-card:focus-visible {
+            transform: translateY(-3px);
+            border-color: rgba(184,148,58,.5);
+            box-shadow: 0 22px 42px rgba(11,31,54,.22);
+            outline: none;
         }
-        .insta-post-badge {
+        .insta-card:focus-visible::after { opacity: .94; }
+        .insta-card-media {
             position: absolute;
-            top: 12px; right: 12px;
-            width: 30px; height: 30px;
-            border-radius: 9px;
-            background: linear-gradient(135deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
-            display: flex; align-items: center; justify-content: center;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 85%, rgba(184,148,58,.25) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 15%, rgba(181,31,42,.2) 0%, transparent 50%),
+                linear-gradient(150deg, var(--blue-mid) 0%, var(--blue-light) 100%);
         }
-        .insta-post-badge svg { width: 16px; height: 16px; fill: white; }
-        .insta-post-content {
-            padding: 1.8rem 1.7rem;
+        .insta-card-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transform: scale(1.01);
+            transition: filter .42s ease, transform .42s ease;
+        }
+        .insta-card:focus-visible .insta-card-img {
+            filter: blur(5px) saturate(.9) brightness(.92);
+            transform: scale(1.08);
+        }
+        .insta-card-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            padding: 1.35rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .28s ease, transform .28s ease;
         }
-        .insta-post-header {
+        .insta-card:focus-visible .insta-card-overlay {
+            opacity: 1;
+            transform: none;
+        }
+        .insta-card-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            width: fit-content;
+            margin-bottom: .75rem;
+            font-family: 'Lora', serif;
+            font-size: .66rem;
+            font-style: italic;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+        }
+        .insta-card-caption {
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-size: .88rem;
+            line-height: 1.65;
+            color: #e8f2f8;
+            text-shadow: 0 2px 12px rgba(0,0,0,.22);
+        }
+        .insta-card-meta {
+            margin-top: .8rem;
+            font-size: .72rem;
+            color: rgba(232,242,248,.72);
+        }
+        .insta-card-icon {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            z-index: 2;
+            width: 32px; height: 32px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: .7rem;
-            margin-bottom: 1rem;
+            justify-content: center;
+            background: rgba(255,255,255,.16);
+            border: 1px solid rgba(255,255,255,.2);
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: opacity .28s ease, transform .28s ease;
         }
-        .insta-avatar {
-            flex-shrink: 0;
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
+        .insta-card-icon svg { width: 15px; height: 15px; fill: #e8f2f8; }
+        .insta-card:focus-visible .insta-card-icon { opacity: 1; transform: none; }
+        .insta-card-placeholder { pointer-events: none; }
+        .insta-card-placeholder .insta-card-overlay { opacity: .75; transform: none; }
+        .insta-status {
+            min-height: 1.4rem;
+            margin-top: 1rem;
             font-size: .78rem;
-            color: white;
-        }
-        .insta-username {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: .92rem;
-            color: var(--blue-dark);
-        }
-        .insta-post-date { font-size: .74rem; color: var(--text-muted); }
-        .insta-post-caption {
-            font-size: .88rem;
             color: var(--text-muted);
-            line-height: 1.75;
-            margin-bottom: .9rem;
-        }
-        .insta-post-likes {
-            font-size: .78rem;
-            color: var(--gold);
             font-style: italic;
         }
         .insta-btn-wrap { margin-top: 2.2rem; }
@@ -470,12 +520,39 @@
         @keyframes modalIn { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
 
         /* ─── RESPONSIVE ────────────────────────────────────────── */
+
+        @media (hover: hover) and (pointer: fine) {
+            .insta-card:hover {
+                transform: translateY(-3px);
+                border-color: rgba(184,148,58,.5);
+                box-shadow: 0 22px 42px rgba(11,31,54,.22);
+            }
+            .insta-card:hover::after { opacity: .94; }
+            .insta-card:hover .insta-card-img {
+                filter: blur(5px) saturate(.9) brightness(.92);
+                transform: scale(1.08);
+            }
+            .insta-card:hover .insta-card-overlay {
+                opacity: 1;
+                transform: none;
+            }
+            .insta-card:hover .insta-card-icon {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .insta-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+            .insta-card { min-height: 300px; }
+        }
+
         @media (max-width: 600px) {
             .hero { padding: 4rem 1.5rem 3.5rem; }
             section { padding: 3.5rem 0 3rem; }
             .container { padding: 0 1.2rem; }
-            .insta-post-card { grid-template-columns: 1fr; }
-            .insta-post-media { min-height: 160px; }
+            .insta-grid { grid-template-columns: 1fr; max-width: 320px; }
+            .insta-card { min-height: 360px; }
             .support-grid { grid-template-columns: 1fr; }
             .modal-box { padding: 2rem 1.4rem; }
             .nav-inner { justify-content: flex-start; }
@@ -511,26 +588,30 @@
         <div class="section-rule reveal d2"></div>
         <p class="lead reveal d3">Aktuelle Einblicke in unser Vereinsleben – direkt auf Instagram.</p>
 
-        <!-- TODO: Bildbereich durch Foto des aktuellsten Beitrags ersetzen (z. B. style="background-image:url('...')"), Bildunterschrift und Datum entsprechend anpassen -->
-        <div class="insta-post-card reveal d3">
-            <div class="insta-post-media">
-                <div class="insta-post-badge">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <div id="insta-grid" class="insta-grid reveal d3" aria-live="polite">
+            <article class="insta-card insta-card-placeholder">
+                <div class="insta-card-media"></div>
+                <div class="insta-card-overlay">
+                    <div class="insta-card-eyebrow">Instagram</div>
+                    <p class="insta-card-caption">Beiträge werden geladen …</p>
                 </div>
-                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            </div>
-            <div class="insta-post-content">
-                <div class="insta-post-header">
-                    <div class="insta-avatar">TC</div>
-                    <div>
-                        <div class="insta-username">@tc_brachelen</div>
-                        <div class="insta-post-date">Neuester Beitrag</div>
-                    </div>
+            </article>
+            <article class="insta-card insta-card-placeholder">
+                <div class="insta-card-media"></div>
+                <div class="insta-card-overlay">
+                    <div class="insta-card-eyebrow">Instagram</div>
+                    <p class="insta-card-caption">Beiträge werden geladen …</p>
                 </div>
-                <p class="insta-post-caption">
-                    Tolle Stimmung beim letzten Auftritt! Vielen Dank an alle, die dabei waren und uns unterstützt haben. 🥁🎶
-            </div>
+            </article>
+            <article class="insta-card insta-card-placeholder">
+                <div class="insta-card-media"></div>
+                <div class="insta-card-overlay">
+                    <div class="insta-card-eyebrow">Instagram</div>
+                    <p class="insta-card-caption">Beiträge werden geladen …</p>
+                </div>
+            </article>
         </div>
+        <p id="insta-status" class="insta-status" role="status"></p>
 
         <div class="insta-btn-wrap reveal d4">
             <a class="btn btn-secondary" href="https://www.instagram.com/tc_brachelen/" target="_blank" rel="noopener">Profil besuchen →</a>
@@ -591,7 +672,7 @@
                 <div class="fact-body">
                     Sie möchten den Verein unterstützen, ohne aktiv mitzuspielen? Als passives Mitglied tragen Sie zur Erhaltung unserer Tradition bei.
                 </div>
-                <a class="btn btn-primary" href="2019-05-10_Antrag auf passive Mitgliedschaft.pdf" target="_blank" rel="noopener">Jetzt unterstützen →</a>
+                <a class="btn btn-primary" href="mailto:info@trommlercorps-brachelen.de?subject=Antrag%20auf%20passive%20Mitgliedschaft&body=Sehr%20geehrte%20Damen%20und%20Herren%2C%0D%0A%0D%0Ahiermit%20beantrage%20ich%20die%20passive%20Mitgliedschaft%20im%20Trommler%20und%20Pfeifercorps%20Brachelen.%0D%0A%0D%0AIch%20erteile%20dem%20Trommler-%20und%20Pfeifercorps%20Brachelen%20bis%20auf%20Widerruf%20die%20Erlaubnis%20den%0D%0AJahresbetrag%20von%20derzeit%206%2C00-%20%E2%82%AC%20von%20meinem%20Konto%20einzuziehen.%0D%0A%0D%0AName%3A%0D%0AStra%C3%9Fe%2C%20PLZ%2C%20Ort%3A%0D%0ATelefon%3A%0D%0AIBAN%3A%0D%0A%0D%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen">Jetzt unterstützen →</a>
             </div>
 
             <div class="fact-card reveal d2">
@@ -600,7 +681,7 @@
                 <div class="fact-body">
                     Sie sind passives Mitglied und möchten Ihre Adresse aktualisieren? Dann nutzen Sie gerne unser Formular.
                 </div>
-				<a class="btn btn-primary" href="2019-10-17_Adressänderung.pdf" target="_blank" rel="noopener">Adresse aktualisieren →</a>
+				<a class="btn btn-primary" href="mailto:info@trommlercorps-brachelen.de?subject=Hinweis%20auf%20Adress%C3%A4nderung&body=Sehr%20geehrte%20Damen%20und%20Herren%2C%0D%0A%0D%0Ahiermit%20m%C3%B6chte%20ich%20Ihnen%20mitteilen%2C%20dass%20sich%20meine%20Kontakt-%20und%2Foder%0D%0ABankdaten%20ge%C3%A4ndert%20haben.%20Dem%20Trommler-%20und%20Pfeifercorps%20Brachelen%20erteile%20ich%20nach%0D%0Awie%20vor%20bis%20auf%20Widerruf%20die%20Erlaubnis%20den%20Jahresbetrag%20von%20derzeit%206%2C00-%20%E2%82%AC%20von%20meinem%0D%0AKonto%20einzuziehen.%0D%0A%0D%0AName%3A%0D%0AStra%C3%9Fe%2C%20PLZ%2C%20Ort%3A%0D%0ATelefon%3A%0D%0AIBAN%3A%0D%0A%0D%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen">Adresse aktualisieren →</a>
             </div>
         </div>
     </div>
@@ -612,8 +693,8 @@
         <p class="footer-copy">© 2025 Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
         <div class="footer-links">
             <a href="mailto:info@trommlercorps-brachelen.de" class="footer-link">Kontaktieren</a>
-			<button class="footer-link" onclick="openModal('datenschutz')">Datenschutzerklärung</button>
-            <button class="footer-link" onclick="openModal('impressum')">Impressum</button>
+			<button class="footer-link" type="button" onclick="openLegalModal('datenschutz')">Datenschutzerklärung</button>
+            <button class="footer-link" type="button" onclick="openLegalModal('impressum')">Impressum</button>
         </div>
     </div>
 </footer>
@@ -701,71 +782,13 @@
     </div>
 </div>
 
-<!-- ─── MODAL: DATENSCHUTZ ───────────────────────────────────── -->
-<div id="modal-datenschutz" class="modal-overlay" role="dialog" aria-modal="true">
+
+<!-- ─── MODAL: RECHTLICHES (zentral geladen) ───────────────────── -->
+<div id="modal-legal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title">
     <div class="modal-box">
-        <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
-        <h2>Datenschutzerklärung</h2>
-        <div class="modal-body">
-            <h3>1. Datenschutz auf einen Blick</h3>
-            <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
-
-            <h3>Datenerfassung auf dieser Website</h3>
-            <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber, dessen Kontaktdaten dem Impressum zu entnehmen sind. Da es sich um eine rein statische HTML-Datei handelt, werden keine Daten serverseitig verarbeitet oder gespeichert.</p>
-            <p>Ihre Daten werden erhoben, indem Sie uns diese mitteilen, z.&nbsp;B. per E-Mail über die auf dieser Seite genannten Adressen.</p>
-
-            <h3>Ihre Rechte</h3>
-            <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten sowie ein Recht auf Berichtigung oder Löschung. Wenden Sie sich hierzu jederzeit an uns.</p>
-
-            <h3>2. Kontaktanfragen per E-Mail</h3>
-            <p>Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten zum Zwecke der Bearbeitung Ihres Anliegens gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO.</p>
-
-            <h3>Verantwortliche Stelle</h3>
-            <p>
-                Trommler- und Pfeifercorps 1912 Brachelen e.V.<br>
-                1. Vorsitzender: Reinhold Kreutzer<br>
-                Schüngeler Weg 1a, 41836 Hückelhoven<br>
-                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
-            </p>
-
-            <h3>Beschwerderecht</h3>
-            <p>Im Falle von Verstößen gegen die DSGVO steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu, insbesondere in dem Mitgliedstaat Ihres gewöhnlichen Aufenthalts.</p>
-
-            <p style="margin-top:1.4rem;font-size:.8rem;color:#aaa;">Quelle: e-recht24.de</p>
-        </div>
-    </div>
-</div>
-
-<!-- ─── MODAL: IMPRESSUM ─────────────────────────────────────── -->
-<div id="modal-impressum" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeModal('impressum')">×</button>
-        <h2>Impressum</h2>
-        <div class="modal-body">
-            <h3>Herausgeber</h3>
-            <p>Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
-
-            <h3>Vertreten durch</h3>
-            <p>
-                <strong>Reinhold Kreutzer</strong> – 1. Vorsitzender<br>
-                Schüngeler Weg 1A, 41836 Hückelhoven<br>
-                Telefon: <a href="tel:+4924624433">02462 4433</a><br>
-                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
-            </p>
-            <p style="margin-top:.8rem">
-                <strong>Harald Brendgens</strong> – Geschäftsführer<br>
-                Alter Steinweg 20, 41836 Hückelhoven<br>
-                Telefon: <a href="tel:+492462906292">02462 2026500</a><br>
-                E-Mail: <a href="mailto:info@trommlercorps-brachelen.de">info@trommlercorps-brachelen.de</a>
-            </p>
-
-            <h3>1. Inhalt der Seiten</h3>
-			<p>Der Herausgeber und Autor übernimmt keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen. Haftungsansprüche gegen den Autor, gleich welcher Art, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden sind grundsätzlich ausgeschlossen.</p>
-			<p>Alle Angebote bzw. Termine und Ankündigungen sind freibleibend und unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.</p>
-
-            <h3>2. Verweise und Links</h3>
-            <p>Der Herausgeber bzw. der Autor dieser Seiten distanziert sich hiermit ausdrücklich von allen Inhalten aller gelinkten / verknüpften Seiten. Diese Feststellung gilt für alle innerhalb des eigenen Internetangebotes gesetzten Links und Verweise sowie für Fremdeinträge in vom Autor eingerichteten Gästebüchern, Diskussionsforen und Mailinglisten. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.</p>
-        </div>
+        <button class="modal-close" type="button" onclick="closeLegalModal()">×</button>
+        <h2 id="legal-modal-title"></h2>
+        <div id="legal-modal-body" class="modal-body"></div>
     </div>
 </div>
 
@@ -790,6 +813,126 @@
         }
     });
 
+    // Instagram via Behold Feed
+    const BEHOLD_FEED_URL = 'https://feeds.behold.so/DW6baFFMTA2GbMcQYW3t';
+    const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/tc_brachelen/';
+
+    function cleanCaption(text) {
+        return (text || 'Instagram-Beitrag ansehen').replace(/\s+/g, ' ').trim();
+    }
+
+    function truncateCaption(text, maxLength = 150) {
+        const clean = cleanCaption(text);
+        if (clean.length <= maxLength) return clean;
+        return clean.slice(0, maxLength).trim().replace(/[,.!?;:\-–—]+$/, '') + '…';
+    }
+
+    function formatPostDate(timestamp) {
+        if (!timestamp) return 'Neuester Beitrag';
+        const date = new Date(timestamp);
+        if (Number.isNaN(date.getTime())) return 'Neuester Beitrag';
+        return new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+    }
+
+    function pickMediaUrl(post) {
+        return post?.sizes?.medium?.mediaUrl
+            || post?.sizes?.small?.mediaUrl
+            || post?.thumbnailUrl
+            || post?.mediaUrl
+            || '';
+    }
+
+    function instagramIcon() {
+        return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+    }
+
+    function createInstagramCard(post, username) {
+        const card = document.createElement('a');
+        card.className = 'insta-card';
+        card.href = post.permalink || INSTAGRAM_PROFILE_URL;
+        card.target = '_blank';
+        card.rel = 'noopener';
+        card.setAttribute('aria-label', 'Instagram-Beitrag öffnen');
+
+        const media = document.createElement('div');
+        media.className = 'insta-card-media';
+
+        const mediaUrl = pickMediaUrl(post);
+        if (mediaUrl) {
+            const img = document.createElement('img');
+            img.className = 'insta-card-img';
+            img.src = mediaUrl;
+            img.alt = truncateCaption(post.caption, 90);
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.onerror = () => { img.remove(); };
+            media.appendChild(img);
+        }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'insta-card-overlay';
+
+        const eyebrow = document.createElement('div');
+        eyebrow.className = 'insta-card-eyebrow';
+        eyebrow.textContent = post.mediaType === 'VIDEO' || post.isReel ? 'Instagram Reel' : 'Instagram Beitrag';
+
+        const caption = document.createElement('p');
+        caption.className = 'insta-card-caption';
+        caption.textContent = truncateCaption(post.caption);
+
+        const meta = document.createElement('div');
+        meta.className = 'insta-card-meta';
+        meta.textContent = `@${username || 'tc_brachelen'} · ${formatPostDate(post.timestamp)}`;
+
+        const icon = document.createElement('div');
+        icon.className = 'insta-card-icon';
+        icon.innerHTML = instagramIcon();
+
+        overlay.append(eyebrow, caption, meta);
+        card.append(media, icon, overlay);
+        return card;
+    }
+
+    function renderInstagramError() {
+        const grid = document.getElementById('insta-grid');
+        const status = document.getElementById('insta-status');
+        if (!grid || !status) return;
+        status.textContent = 'Instagram-Beiträge konnten gerade nicht geladen werden. Bitte besuchen Sie direkt unser Profil.';
+        grid.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            const card = document.createElement('a');
+            card.className = 'insta-card';
+            card.href = INSTAGRAM_PROFILE_URL;
+            card.target = '_blank';
+            card.rel = 'noopener';
+            card.innerHTML = `<div class="insta-card-media"></div><div class="insta-card-overlay"><div class="insta-card-eyebrow">Instagram</div><p class="insta-card-caption">Beitrag auf Instagram ansehen →</p></div>`;
+            grid.appendChild(card);
+        }
+    }
+
+    async function loadInstagramFeed() {
+        const grid = document.getElementById('insta-grid');
+        const status = document.getElementById('insta-status');
+        if (!grid) return;
+
+        try {
+            const response = await fetch(BEHOLD_FEED_URL, { cache: 'no-store' });
+            if (!response.ok) throw new Error(`Feed konnte nicht geladen werden (${response.status})`);
+            const data = await response.json();
+            const posts = Array.isArray(data.posts) ? data.posts.slice(0, 3) : [];
+            if (!posts.length) throw new Error('Keine Beiträge im Feed gefunden');
+
+            grid.innerHTML = '';
+            posts.forEach(post => grid.appendChild(createInstagramCard(post, data.username)));
+            if (status) status.textContent = '';
+        } catch (error) {
+            console.warn('Instagram-Feed konnte nicht geladen werden:', error);
+            renderInstagramError();
+        }
+    }
+
+    loadInstagramFeed();
+
     // scroll reveal
     const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
@@ -812,5 +955,6 @@
     window.addEventListener('scroll', updateNav, { passive: true });
     updateNav();
 </script>
+<script src="assets/js/legal-modal.js" data-legal-src="rechtliches.html"></script>
 </body>
 </html>
