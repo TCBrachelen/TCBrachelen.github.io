@@ -1346,9 +1346,314 @@ body {
     }
 }
 
+
+
+/* ─── MOBILE-KORREKTUREN V2 – 2026-06-27 ─────────────────
+   Greift bis 900px Breite, damit die Anpassungen auch in breiteren
+   mobilen Vorschauen sichtbar sind. Desktop über 900px bleibt unverändert. */
+@media (max-width: 900px) {
+    /* 1) Intro: Der freigelegte Gründungstext sitzt mobil wieder mittig.
+       Dadurch erscheinen Jahr + Überschrift zuerst und nicht erst der Fließtext. */
+    .intro-stage {
+        min-height: 225vh;
+    }
+    .intro-stage .text-block {
+        align-items: center !important;
+        justify-content: center !important;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+    .intro-stage .text-block .text-inner {
+        padding-top: 0 !important;
+    }
+
+    /* 2) 1913–1945: Der innen scrollende Textkasten wird ungefähr halb so hoch. */
+    .story-scrollbox .story-text .text-inner {
+        height: clamp(110px, 16vh, 155px) !important;
+        padding: .82rem .95rem !important;
+    }
+    .story-scrollbox .story-text h3 {
+        font-size: clamp(1.02rem, 4.2vw, 1.32rem) !important;
+        line-height: 1.08 !important;
+        margin-bottom: .42rem !important;
+    }
+    .story-scrollbox .story-text .year {
+        font-size: .72rem !important;
+        margin-bottom: .22rem !important;
+    }
+    .story-scrollbox .story-text p,
+    .story-scrollbox .story-text li {
+        font-size: .78rem !important;
+        line-height: 1.38 !important;
+        margin-bottom: .55rem !important;
+    }
+    .story-scrollbox .story-text .text-inner::after {
+        height: 2.2rem;
+    }
+
+    /* 3) 1960–2000: Text links im linken Drittel, Bilder 9 und 10 rechts. */
+    .sixties-sticky {
+        background: #fff !important;
+    }
+    .sixties-image9,
+    .sixties-image10 {
+        left: 33.333vw !important;
+        right: auto !important;
+        width: 66.667vw !important;
+        height: 100vh !important;
+    }
+    .sixties-image9 img,
+    .sixties-image10 img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .sixties-copy-1 {
+        left: 0 !important;
+        right: auto !important;
+        top: 0 !important;
+        bottom: auto !important;
+        width: 33.333vw !important;
+        height: 100vh !important;
+        max-height: none !important;
+        padding: 1rem .78rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+    .sixties-copy-1 .year {
+        font-size: .62rem !important;
+        line-height: 1.05 !important;
+        letter-spacing: .045em !important;
+        margin-bottom: .28rem !important;
+    }
+    .sixties-copy-1 h3 {
+        font-size: clamp(.78rem, 3.15vw, 1.04rem) !important;
+        line-height: 1.08 !important;
+        margin-bottom: .45rem !important;
+    }
+    .sixties-copy-1 p {
+        font-size: clamp(.58rem, 2.18vw, .72rem) !important;
+        line-height: 1.28 !important;
+        margin: 0 !important;
+    }
+
+    /* 4) Die drei gewünschten Textkarten: etwa halbe Breite und deutlich geringere Höhe. */
+    .sixties-copy-2,
+    .seventies-copy-3,
+    .chronik-parallax-1996-card {
+        left: auto !important;
+        right: 1.15rem !important;
+        width: calc(50vw - 1.75rem) !important;
+        max-width: 280px !important;
+        max-height: 34vh !important;
+        padding: .72rem .78rem !important;
+        overflow: hidden !important;
+    }
+    .sixties-copy-2 {
+        bottom: 4vh !important;
+    }
+    .seventies-copy-3,
+    .chronik-parallax-1996-card {
+        bottom: 6vh !important;
+    }
+    .sixties-copy-2 p,
+    .seventies-copy-3 p,
+    .chronik-parallax-1996-card p {
+        font-size: clamp(.58rem, 2.15vw, .72rem) !important;
+        line-height: 1.32 !important;
+        margin: 0 !important;
+    }
+}
+
+
+/* ─── MOBILE-QUERFORMAT-KORREKTUREN V3 – 2026-06-27 ─────────────
+   Speziell für Smartphones im Querformat: große Breite, geringe Höhe.
+   Diese Regeln stehen nach den normalen mobilen Regeln und überschreiben sie gezielt. */
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 1100px) {
+    /* Intro: Gründungstext nach dem Wegschieben des ersten Bildes lesbar halten. */
+    .intro-stage {
+        min-height: 225vh !important;
+    }
+    .intro-stage .text-block {
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 1.6rem 1.6rem !important;
+    }
+    .intro-stage .text-block .text-inner {
+        max-height: 82vh !important;
+        overflow: auto !important;
+        padding-top: 0 !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    .intro-stage .text-block .year {
+        font-size: .78rem !important;
+        margin-bottom: .2rem !important;
+    }
+    .intro-stage .text-block h3 {
+        font-size: clamp(1.1rem, 3.4vw, 1.55rem) !important;
+        margin-bottom: .55rem !important;
+    }
+    .intro-stage .text-block p {
+        font-size: .82rem !important;
+        line-height: 1.45 !important;
+        margin-bottom: .55rem !important;
+    }
+
+    /* Erste Erfolge: Querformat braucht mehr relative Höhe, aber real deutlich weniger Pixelhöhe. */
+    .story-scrollbox .story-text .text-inner {
+        left: 1.3rem !important;
+        right: auto !important;
+        bottom: 4vh !important;
+        width: min(430px, calc(100% - 2.6rem)) !important;
+        height: 42vh !important;
+        max-height: 42vh !important;
+        padding: .9rem 1rem !important;
+        overflow: hidden !important;
+    }
+    .story-scrollbox .story-text h3 {
+        font-size: clamp(1rem, 2.8vw, 1.35rem) !important;
+        line-height: 1.08 !important;
+        margin-bottom: .42rem !important;
+    }
+    .story-scrollbox .story-text .year {
+        font-size: .72rem !important;
+        margin-bottom: .22rem !important;
+    }
+    .story-scrollbox .story-text p,
+    .story-scrollbox .story-text li {
+        font-size: .78rem !important;
+        line-height: 1.38 !important;
+        margin-bottom: .52rem !important;
+    }
+
+    /* 1960–2000: linker Textbereich, rechte Bildfläche auch im Handy-Querformat. */
+    .sixties-sticky {
+        background: #fff !important;
+    }
+    .sixties-image9,
+    .sixties-image10 {
+        left: 33.333vw !important;
+        right: auto !important;
+        width: 66.667vw !important;
+        height: 100vh !important;
+    }
+    .sixties-image9 img,
+    .sixties-image10 img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .sixties-copy-1 {
+        left: 0 !important;
+        right: auto !important;
+        top: 0 !important;
+        bottom: auto !important;
+        width: 33.333vw !important;
+        height: 100vh !important;
+        max-height: none !important;
+        padding: .85rem .7rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+    .sixties-copy-1 .year {
+        font-size: .58rem !important;
+        line-height: 1.05 !important;
+        letter-spacing: .04em !important;
+        margin-bottom: .24rem !important;
+    }
+    .sixties-copy-1 h3 {
+        font-size: clamp(.78rem, 2.6vw, 1.04rem) !important;
+        line-height: 1.06 !important;
+        margin-bottom: .38rem !important;
+    }
+    .sixties-copy-1 p {
+        font-size: clamp(.56rem, 1.8vw, .7rem) !important;
+        line-height: 1.24 !important;
+        margin: 0 !important;
+    }
+
+    /* Kurze Textkarten: halb so breit/hoch, mit Scroll falls der Text knapp wird. */
+    .sixties-copy-2,
+    .seventies-copy-3,
+    .chronik-parallax-1996-card {
+        left: auto !important;
+        right: 1.15rem !important;
+        width: min(360px, calc(50vw - 1.75rem)) !important;
+        max-width: 360px !important;
+        max-height: 48vh !important;
+        padding: .85rem .95rem !important;
+        overflow: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    .sixties-copy-2 {
+        bottom: 4vh !important;
+    }
+    .seventies-copy-3,
+    .chronik-parallax-1996-card {
+        bottom: 6vh !important;
+    }
+    .sixties-copy-2 p,
+    .seventies-copy-3 p,
+    .chronik-parallax-1996-card p {
+        font-size: clamp(.62rem, 1.85vw, .76rem) !important;
+        line-height: 1.32 !important;
+        margin: 0 !important;
+    }
+}
+
+
+
+/* ─── MOBILE-FOOTER-KORREKTUR V4 – 2026-06-27 ─────────────
+   Nur mobil: Outro/Footer werden aus der Parallax-Bühne herausgelöst
+   und stehen dadurch unterhalb des Schlussbildes 17_DSCF6907.jpg,
+   statt das Bild absolut zu überlagern. */
+@media (max-width: 900px), (orientation: landscape) and (max-height: 560px) and (max-width: 1100px) {
+    .final-outro-stack,
+    .chronik-parallax-stage .final-outro-stack {
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        z-index: 1 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        pointer-events: auto !important;
+    }
+
+    .chronik-parallax-stage {
+        margin-bottom: 0 !important;
+    }
+
+    .chronik-outro {
+        position: relative !important;
+        z-index: 1 !important;
+        background: rgba(244,241,232,.98) !important;
+    }
+
+    .footer {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+}
+
+/* MOBILE_FIX_VERSION: v4_footer_below_image_2026-06-27 */
+
+/* MOBILE_FIX_VERSION: v3_landscape_2026-06-27 */
+
 </style>
 </head>
 <body>
+<!-- MOBILE_FIX_VERSION: v2_2026-06-27 -->
+<!-- MOBILE_FIX_VERSION: v3_landscape_2026-06-27 -->
+<!-- MOBILE_FIX_VERSION: v4_footer_below_image_2026-06-27 -->
 
 <div class="content">
 
@@ -2120,6 +2425,44 @@ onScroll();
     window.addEventListener('resize', updateParallax);
     window.addEventListener('load', updateParallax);
     updateParallax();
+})();
+</script>
+
+
+
+<script>
+(() => {
+    const stage = document.getElementById('chronikParallaxStage');
+    const finalOutro = document.getElementById('finalOutroStack');
+    if (!stage || !finalOutro) return;
+
+    const originalParent = finalOutro.parentNode;
+    const originalNextSibling = finalOutro.nextSibling;
+    const mobileFooterQuery = window.matchMedia('(max-width: 900px), (orientation: landscape) and (max-height: 560px) and (max-width: 1100px)');
+
+    function placeFooterForViewport() {
+        if (mobileFooterQuery.matches) {
+            if (finalOutro.parentNode === stage) {
+                stage.insertAdjacentElement('afterend', finalOutro);
+            }
+        } else if (finalOutro.parentNode !== originalParent) {
+            if (originalNextSibling && originalNextSibling.parentNode === originalParent) {
+                originalParent.insertBefore(finalOutro, originalNextSibling);
+            } else {
+                originalParent.appendChild(finalOutro);
+            }
+        }
+    }
+
+    placeFooterForViewport();
+
+    if (mobileFooterQuery.addEventListener) {
+        mobileFooterQuery.addEventListener('change', placeFooterForViewport);
+    } else if (mobileFooterQuery.addListener) {
+        mobileFooterQuery.addListener(placeFooterForViewport);
+    }
+    window.addEventListener('resize', placeFooterForViewport);
+    window.addEventListener('orientationchange', placeFooterForViewport);
 })();
 </script>
 
