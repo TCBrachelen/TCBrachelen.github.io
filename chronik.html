@@ -111,7 +111,7 @@ body {
     width: 90px;
     height: 2px;
     margin: 1rem auto 0;
-    background: linear-gradient(90deg, var(--gold-light) 0%, #fff 100%);
+    background: linear-gradient(90deg, var(--gold-light) 0%, var(--red) 100%);
     border-radius: 2px;
 }
 
@@ -121,12 +121,26 @@ body {
     position: absolute;
     z-index: 4;
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.1rem, 1.7vw, 1.38rem);
+    font-size: clamp(.98rem, 1.45vw, 1.18rem);
     font-weight: 700;
     line-height: 1;
     letter-spacing: .03em;
-    color: var(--gold);
-    text-shadow: 0 2px 14px rgba(0,0,0,.58);
+    color: var(--text);
+    text-shadow: none;
+    pointer-events: none;
+    padding: .62rem .78rem .52rem;
+    background: rgba(255,255,255,.94);
+    box-shadow: 0 14px 34px rgba(11,31,54,.24);
+    overflow: hidden;
+}
+.image-year::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
     pointer-events: none;
 }
 .image-year.pos-br {
@@ -139,9 +153,10 @@ body {
     bottom: 2rem;
     text-align: left;
 }
-.image-year.pos-bc {
+.image-year.pos-tc {
     left: 50%;
-    bottom: 2rem;
+    top: 2rem;
+    bottom: auto;
     transform: translateX(-50%);
     text-align: center;
 }
@@ -314,6 +329,9 @@ body {
     background: #fff;
     color: var(--text);
     box-shadow: 0 20px 50px rgba(11,31,54,.25);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s ease, transform .8s ease;
 }
 .story-text .year {
     font-family: 'Playfair Display', serif;
@@ -339,18 +357,10 @@ body {
 }
 
 /* sanftes Einblenden */
-.story-text .text-inner { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
 .story-text.visible .text-inner { opacity: 1; transform: none; }
 
 
-
 /* ─── STORY 3: geteilter Text + Vollbild-Statements ───── */
-.history-split-intro {
-    background: #fff;
-}
-.history-split-intro .text-inner {
-    max-width: var(--text-width);
-}
 .fullscreen-quote {
     position: relative;
     height: 100vh;
@@ -396,9 +406,6 @@ body {
     font-size: clamp(1rem, 2vw, 1.32rem);
     line-height: 1.55;
     margin: 0;
-}
-.continuation-block {
-    background: #fff;
 }
 
 /* ─── STORY 3: Bild 8 + überfahrender Abschlusstext ───── */
@@ -472,7 +479,6 @@ body {
 }
 
 
-
 /* ─── STORY 3: geteilter Text + Bildsequenz ───── */
 .rebuild-sequence {
     position: relative;
@@ -524,9 +530,6 @@ body {
     color: var(--text);
     margin-bottom: .9rem;
 }
-.rebuild-spacer {
-    height: 1.15rem;
-}
 .rebuild-bg-fade {
     position: absolute;
     inset: 0;
@@ -544,9 +547,7 @@ body {
     z-index: 3;
     transform: translateY(100%);
 }
-.rebuild-image5 img,
-.rebuild-image7 img,
-.rebuild-image8 img {
+.rebuild-image5 img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -605,109 +606,6 @@ body {
     will-change: transform, opacity;
     color: var(--text);
     text-shadow: none;
-}
-.fullscreen-quote {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-    background: #fff;
-}
-.fullscreen-quote figure {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-}
-.fullscreen-quote img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.fullscreen-quote .overlay-copy {
-    right: 2.2rem;
-    bottom: 8vh;
-    width: min(430px, calc(100% - 4.4rem));
-    text-align: left;
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity .75s ease, transform .75s ease;
-}
-.fullscreen-quote.visible .overlay-copy {
-    opacity: 1;
-    transform: translateY(0);
-}
-.continuation-block {
-    background: #fff;
-}
-
-/* ─── STORY 3: Bild 8 + überfahrender Abschlusstext ───── */
-.outro-image-sequence {
-    position: relative;
-    min-height: 185vh;
-    background: #fff;
-}
-.outro-image-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: #fff;
-}
-.outro-image-layer {
-    position: absolute;
-    inset: 0;
-    will-change: transform, opacity;
-}
-.outro-image-layer img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.outro-image-layer::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.12) 55%, rgba(0,0,0,.44) 100%);
-    pointer-events: none;
-}
-.outro-image-sticky .overlay-copy {
-    position: absolute;
-    right: 2.2rem;
-    bottom: 8vh;
-    z-index: 3;
-    width: min(430px, calc(100% - 4.4rem));
-    color: #fff;
-    text-align: left;
-    text-shadow: 0 2px 16px rgba(0,0,0,.72);
-    will-change: transform, opacity;
-}
-.outro-image-sticky .overlay-copy p {
-    margin: 0;
-    font-size: clamp(1rem, 2vw, 1.32rem);
-    line-height: 1.55;
-}
-.outro-follow-text {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 4;
-    padding: 14vh 2rem 0;
-    will-change: transform, opacity;
-}
-.outro-follow-text .text-inner {
-    max-width: var(--text-width);
-    margin: 0 auto;
-    padding: 2.2rem 2.4rem;
-    background: #fff;
-    color: var(--text);
-    box-shadow: 0 20px 50px rgba(11,31,54,.25);
-}
-.outro-follow-text p {
-    font-size: .98rem;
-    color: var(--text);
-    margin-bottom: .9rem;
 }
 
 
@@ -789,11 +687,10 @@ body {
 }
 
 
-
 /* ─── STORY 4B/5: 1975–Heute Sequenz ───── */
 .seventies-sequence {
     position: relative;
-    min-height: 760vh;
+    min-height: 245vh;
     background: #fff;
 }
 .seventies-sticky {
@@ -823,7 +720,6 @@ body {
 }
 .seventies-image13 { z-index: 2; }
 .seventies-image14 { z-index: 3; opacity: 0; }
-.seventies-image15 { z-index: 4; opacity: 1; }
 .seventies-copy {
     position: absolute;
     z-index: 5;
@@ -844,228 +740,8 @@ body {
     left: 2.2rem;
     bottom: 8vh;
 }
-.seventies-copy-4 {
-    right: 2.2rem;
-    bottom: 8vh;
-}
 
 
-.today-underlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: auto;
-    z-index: 6;
-    min-height: 100vh;
-    display: block;
-    align-items: initial;
-    padding: 0 0 12vh;
-    clip-path: inset(100% 0 0 0);
-    will-change: transform, clip-path;
-}
-
-.today-standalone {
-    background: #fff;
-    min-height: 100vh;
-    padding: 5rem 2rem;
-    display: flex;
-    align-items: center;
-}
-.today-standalone .text-inner {
-    max-width: var(--text-width);
-    margin: 0 auto;
-    width: 100%;
-}
-.today-standalone .year {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem; font-weight: 800;
-    color: var(--gold); letter-spacing: .08em;
-    margin-bottom: .4rem;
-}
-.today-standalone h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.5rem, 3.2vw, 2.4rem);
-    font-weight: 700; line-height: 1.15;
-    color: var(--blue-dark);
-    margin-bottom: 1.2rem;
-}
-.today-standalone p  { font-size: .98rem; color: var(--text); margin-bottom: .9rem; }
-.today-final-text {
-    will-change: opacity, transform;
-}
-.today-standalone ul { padding-left: 1.4rem; margin-bottom: .9rem; }
-.today-standalone li { font-size: .98rem; color: var(--text); margin-bottom: .4rem; }
-
-.today-underlay.today-standalone {
-    display: block;
-    align-items: initial;
-    padding: 0 0 12vh;
-}
-.today-underlay .text-inner {
-    padding: 5rem 2rem 0;
-}
-.today-inline-image {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-    background: #000;
-}
-.today-inline-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Bild 17 wird am Ende der Heute-Sequenz wie ein Vorhang über den stehenden Text geschoben */
-.seventies-final-image-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-    overflow: hidden;
-    pointer-events: none;
-    background: #fff;
-    transform: translateY(100vh);
-    will-change: transform, opacity;
-}
-.seventies-final-image-layer::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: #fff;
-    opacity: var(--final-white-opacity, 0);
-    pointer-events: none;
-}
-.seventies-final-image-layer img {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transform: scale(1.05);
-    transform-origin: center center;
-    will-change: transform, opacity;
-}
-.seventies-final-image-layer .final-image-copy {
-    z-index: 3;
-}
-
-/* ─── SCHLUSSSZENE: letzter Text + Bild 17 + Credit in einer gemeinsamen Sticky-Bühne ───── */
-.final-image-sequence {
-    position: relative;
-    min-height: 265vh;
-    margin-top: 0; /* Bild 17 startet erst nach dem vollständig lesbaren Heute-Text */
-    background: #fff;
-    z-index: 2;
-}
-.final-image-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: #fff;
-    z-index: 1;
-    pointer-events: none;
-}
-.final-image-sticky::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.10) 55%, rgba(0,0,0,.30) 100%);
-    opacity: var(--final-overlay-opacity, 0);
-    pointer-events: none;
-}
-.final-image-sticky img {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transform: translateY(100vh) scale(1.05);
-    transform-origin: center center;
-    will-change: transform, opacity;
-}
-.final-pretext-layer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 4;
-    padding: 1.1rem 2rem 0;
-    background: #fff;
-    pointer-events: none;
-    will-change: transform, opacity;
-}
-.final-pretext-layer .text-inner {
-    max-width: var(--text-width);
-    margin: 0 auto;
-    width: 100%;
-}
-.final-pretext-layer p {
-    font-size: .98rem;
-    line-height: 1.85;
-    color: var(--text);
-    margin-bottom: .9rem;
-}
-.final-pretext-layer::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -3rem;
-    height: 3rem;
-    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0) 100%);
-    pointer-events: none;
-}
-.today-final-text {
-    will-change: opacity, transform;
-}
-.final-image-copy {
-    position: absolute;
-    right: 2.2rem;
-    bottom: 8vh;
-    z-index: 5;
-    width: min(560px, calc(100% - 4.4rem));
-    padding: 1.7rem 1.9rem;
-    background: #fff;
-    color: var(--text);
-    box-shadow: 0 20px 50px rgba(11,31,54,.28);
-    text-align: left;
-    text-shadow: none;
-    will-change: transform, opacity;
-    pointer-events: none;
-    transform: translateY(28px);
-}
-.final-image-copy p {
-    margin: 0;
-    font-size: .98rem;
-    line-height: 1.75;
-    color: var(--text);
-}
-.final-image-copy-credit {
-    opacity: 0;
-}
-.seventies-final-image-layer .final-image-copy-credit {
-    left: 50%;
-    right: auto;
-    top: 8vh;
-    bottom: auto;
-    width: min(680px, calc(100% - 4.4rem));
-    text-align: center;
-    transform: translate(-50%, 28px);
-}
-.seventies-final-image-layer .final-image-copy-credit p {
-    text-align: center;
-}
 .final-outro-stack {
     position: absolute;
     left: 0;
@@ -1080,8 +756,7 @@ body {
 .text-block .text-inner,
 .story-text .text-inner,
 .rebuild-base-panel .text-inner,
-.outro-follow-text .text-inner,
-.today-standalone .text-inner {
+.outro-follow-text .text-inner {
     position: relative;
 }
 .text-block .text-inner::before,
@@ -1089,9 +764,7 @@ body {
 .rebuild-base-panel .text-inner::before,
 .outro-follow-text .text-inner::before,
 .sixties-copy::before,
-.seventies-copy::before,
-.today-standalone .text-inner::before,
-.final-image-copy::before {
+.seventies-copy::before {
     content: "";
     position: absolute;
     top: 0;
@@ -1102,17 +775,12 @@ body {
     pointer-events: none;
 }
 .rebuild-base-panel .text-inner::before,
-.text-block .text-inner::before,
-.today-standalone .text-inner::before {
+.text-block .text-inner::before {
     width: 52px;
     right: auto;
 }
 .story-scrollbox .story-text .text-inner::before {
     z-index: 2;
-}
-.today-underlay .text-inner::before {
-    top: 5rem;
-    left: 2rem;
 }
 
 /* ─── OUTRO ───────────────────────────────────────────── */
@@ -1213,7 +881,7 @@ body {
         }
         .footer-link:hover { color: var(--gold-light); }
 
-@keyframes modalIn { from { opacity: 0; transform: translateY(-14px); }
+@keyframes modalIn { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ─── MOBIL ───────────────────────────────────────────── */
 @media (max-width: 700px) {
@@ -1240,14 +908,6 @@ body {
     .rebuild-sequence { min-height: 345vh; }
     .rebuild-base-panel { top: 7vh; padding: 0 1.3rem; }
     .rebuild-base-panel .text-inner { padding-top: 0; }
-    .rebuild-quote.quote5,
-    .rebuild-quote.quote6,
-    .fullscreen-quote .overlay-copy,
-    .outro-image-sticky .overlay-copy {
-        left: 1.3rem;
-        right: 1.3rem;
-        width: auto;
-    }
     .rebuild-quote.quote5,
     .fullscreen-quote .overlay-copy,
     .outro-image-sticky .overlay-copy { bottom: 6vh; }
@@ -1282,60 +942,17 @@ body {
         line-height: 1.62;
     }
 
-    .seventies-sequence { min-height: 780vh; }
+    .seventies-sequence { min-height: 260vh; }
     .seventies-copy {
         left: 1.3rem;
         right: 1.3rem;
         width: auto;
         padding: 1.4rem 1.35rem;
     }
-    .seventies-copy-3,
-    .seventies-copy-4 {
+    .seventies-copy-3 {
         bottom: 6vh;
     }
     .seventies-copy p {
-        font-size: .92rem;
-        line-height: 1.62;
-    }
-    .today-standalone {
-        min-height: 100vh;
-        padding: 3.5rem 1.3rem;
-        align-items: flex-start;
-    }
-    .today-underlay.today-standalone {
-        padding: 6vh 1.3rem 10vh;
-    }
-    .today-final-image {
-        width: calc(100% - 2.6rem);
-        height: 62vh;
-        min-height: 300px;
-        margin-top: 2rem;
-    }
-    .final-image-sequence { min-height: 245vh; }
-    .final-pretext-layer {
-        padding: 1rem 1.3rem 0;
-    }
-    .final-pretext-layer p {
-        font-size: .92rem;
-        line-height: 1.62;
-    }
-    .final-image-copy {
-        left: 1.3rem;
-        right: 1.3rem;
-        bottom: 6vh;
-        width: auto;
-        padding: 1.4rem 1.35rem;
-    }
-    .seventies-final-image-layer .final-image-copy-credit {
-        left: 50%;
-        right: auto;
-        top: 6vh;
-        bottom: auto;
-        width: calc(100% - 2.6rem);
-        padding: 1.4rem 1.35rem;
-        transform: translate(-50%, 28px);
-    }
-    .final-image-copy p {
         font-size: .92rem;
         line-height: 1.62;
     }
@@ -1349,20 +966,20 @@ body {
     .chronik-outro .btn {
         margin-top: .65rem;
     }
-    .today-underlay .text-inner::before {
-        top: 5rem;
-        left: 2rem;
-    }
     .footer {
         padding: .9rem 1.2rem;
     }
     .image-year {
-        font-size: 1rem;
+        font-size: .92rem;
+        padding: .56rem .68rem .48rem;
     }
     .image-year.pos-br,
-    .image-year.pos-bl,
-    .image-year.pos-bc {
+    .image-year.pos-bl {
         bottom: 1.35rem;
+    }
+    .image-year.pos-tc {
+        top: 1.35rem;
+        bottom: auto;
     }
     .image-year.pos-br {
         right: 1.3rem;
@@ -1371,6 +988,362 @@ body {
         left: 1.3rem;
     }
 
+}
+
+
+/* ════════════════════════════════════════════════════════
+   MERGE: Parallax-Schluss ab Bild 15
+   basiert auf der separaten Parallax-Datei, in Chronik-Stil übersetzt
+   ════════════════════════════════════════════════════════ */
+
+.chronik-parallax-stage {
+    position: relative;
+    min-height: 1400vh;
+    background: #070707;
+    overflow: visible;
+}
+.chronik-parallax-scene {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #070707;
+    isolation: isolate;
+}
+.chronik-parallax-bg-strip {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 300vh;
+    will-change: transform;
+}
+.chronik-parallax-bg-panel {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    --bg-lighten-opacity: 0;
+}
+.chronik-parallax-bg-panel img {
+    position: relative;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    display: block;
+}
+.chronik-parallax-bg-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: #fff;
+    opacity: var(--bg-lighten-opacity, 0);
+    will-change: opacity;
+}
+.chronik-parallax-bg-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.02), transparent 48%, rgba(0,0,0,0.07)),
+        radial-gradient(circle at center, transparent 52%, rgba(0,0,0,0.06));
+}
+.chronik-parallax-foreground {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translate3d(50vw, 120vh, 0) translate(-50%, -50%) scale(1);
+    will-change: opacity, transform, clip-path;
+    background: #111;
+    box-shadow: 0 52px 150px rgba(0,0,0,.70);
+    border-radius: 0;
+}
+.chronik-parallax-foreground img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: none;
+}
+.chronik-parallax-foreground::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.04), transparent 48%, rgba(0,0,0,.20));
+    opacity: .75;
+}
+.chronik-parallax-fg-01 {
+    z-index: 24;
+    width: min(38vw, 640px);
+    height: min(58vh, 720px);
+}
+.chronik-parallax-fg-03 {
+    z-index: 22;
+    width: min(30vw, 540px);
+    height: min(44vh, 560px);
+}
+.chronik-parallax-fg-04,
+.chronik-parallax-fg-06 {
+    z-index: 26;
+    width: min(34vw, 620px);
+    height: min(58vh, 680px);
+}
+.chronik-parallax-fg-05 {
+    z-index: 28;
+    width: min(34vw, 620px);
+    height: min(58vh, 680px);
+}
+.chronik-parallax-fg-06 { z-index: 40; }
+.chronik-parallax-fg-08 {
+    z-index: 36;
+    width: min(50vw, 900px);
+    height: min(56vh, 680px);
+}
+.chronik-parallax-grain {
+    position: absolute;
+    inset: -20%;
+    z-index: 100;
+    pointer-events: none;
+    opacity: .055;
+    mix-blend-mode: overlay;
+    background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,.18) 0 1px, transparent 1.5px);
+    background-size: 8px 8px;
+}
+.chronik-parallax-copy-card {
+    position: absolute;
+    z-index: 90;
+    width: min(590px, calc(100% - 4.4rem));
+    padding: 1.7rem 1.9rem;
+    background: rgba(255,255,255,.94);
+    color: var(--text);
+    box-shadow: 0 26px 75px rgba(0,0,0,.38);
+    opacity: 0;
+    transform: translateY(34px);
+    will-change: opacity, transform;
+}
+.chronik-parallax-copy-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+    pointer-events: none;
+}
+.chronik-parallax-copy-card .year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+}
+.chronik-parallax-copy-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.45rem, 3vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--blue-dark);
+    margin-bottom: 1rem;
+}
+.chronik-parallax-copy-card p,
+.chronik-parallax-copy-card li {
+    font-size: .96rem;
+    line-height: 1.72;
+    color: var(--text);
+}
+.chronik-parallax-copy-card p { margin-bottom: .82rem; }
+.chronik-parallax-copy-card ul {
+    padding-left: 1.25rem;
+    margin-bottom: .82rem;
+}
+.chronik-parallax-copy-card li { margin-bottom: .2rem; }
+.chronik-parallax-copy-card p:last-child { margin-bottom: 0; }
+.chronik-parallax-1996-card {
+    right: 2.2rem;
+    bottom: 8vh;
+    width: min(560px, calc(100% - 4.4rem));
+    transform: translateY(0);
+}
+.chronik-parallax-today-card {
+    left: 50%;
+    right: auto;
+    top: 50%;
+    bottom: auto;
+    width: min(680px, calc(100% - 4.4rem));
+    max-height: 78vh;
+    overflow: auto;
+    padding: 1.9rem 2.1rem;
+    transform: translate(-50%, -50%);
+}
+.chronik-parallax-image-year {
+    position: absolute;
+    z-index: 6;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.98rem, 1.45vw, 1.18rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: .03em;
+    color: var(--text);
+    text-shadow: none;
+    pointer-events: none;
+    padding: .62rem .78rem .52rem;
+    background: rgba(255,255,255,.94);
+    box-shadow: 0 14px 34px rgba(11,31,54,.24);
+    overflow: hidden;
+}
+.chronik-parallax-image-year::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+    pointer-events: none;
+}
+.chronik-parallax-image-year.pos-br {
+    right: 2.2rem;
+    bottom: 2rem;
+    text-align: right;
+}
+.chronik-parallax-image-year.pos-tc {
+    left: 50%;
+    top: 2rem;
+    bottom: auto;
+    transform: translateX(-50%);
+    text-align: center;
+}
+.chronik-parallax-image-year.chronik-parallax-year-2025 {
+    opacity: 0;
+    visibility: hidden;
+}
+.chronik-parallax-stage .final-outro-stack {
+    z-index: 130;
+}
+
+@media (max-width: 900px) {
+    .chronik-parallax-stage { min-height: 1300vh; }
+    .chronik-parallax-fg-01 {
+        width: 64vw;
+        height: 52vh;
+    }
+    .chronik-parallax-fg-03 {
+        width: 50vw;
+        height: 36vh;
+    }
+    .chronik-parallax-fg-04,
+    .chronik-parallax-fg-05,
+    .chronik-parallax-fg-06,
+    .chronik-parallax-fg-08 {
+        width: 78vw;
+        height: 58vh;
+    }
+}
+@media (max-width: 700px) {
+    .chronik-parallax-copy-card,
+    .chronik-parallax-1996-card,
+    .chronik-parallax-today-card {
+        left: 1.3rem;
+        right: 1.3rem;
+        bottom: 6vh;
+        width: auto;
+        max-height: 78vh;
+        padding: 1.35rem 1.35rem;
+    }
+    .chronik-parallax-copy-card p,
+    .chronik-parallax-copy-card li {
+        font-size: .9rem;
+        line-height: 1.58;
+    }
+    .chronik-parallax-image-year {
+        font-size: .92rem;
+        padding: .56rem .68rem .48rem;
+    }
+    .chronik-parallax-image-year.pos-br {
+        right: 1.3rem;
+        bottom: 1.35rem;
+    }
+    .chronik-parallax-image-year.pos-tc {
+        top: 1.35rem;
+        bottom: auto;
+    }
+
+    .chronik-parallax-today-card {
+        left: 50%;
+        right: auto;
+        top: 50%;
+        bottom: auto;
+        width: calc(100% - 2.6rem);
+        max-height: 78vh;
+    }
+}
+
+
+/* ─── KURZE BILD-STATEMENTS ALS TEXTKARTEN ─────
+   Vereinheitlicht die vier kurzen Overlay-Texte mit dem Stil der übrigen Textblöcke. */
+.rebuild-quote.quote5,
+.rebuild-quote.quote6,
+.fullscreen-quote .overlay-copy,
+.outro-image-sticky .overlay-copy {
+    width: min(560px, calc(100% - 4.4rem));
+    padding: 1.7rem 1.9rem;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 20px 50px rgba(11,31,54,.28);
+    text-align: left;
+    text-shadow: none;
+}
+.rebuild-quote.quote5::before,
+.rebuild-quote.quote6::before,
+.fullscreen-quote .overlay-copy::before,
+.outro-image-sticky .overlay-copy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
+    pointer-events: none;
+}
+.rebuild-quote.quote5 p,
+.rebuild-quote.quote6 p,
+.fullscreen-quote .overlay-copy p,
+.outro-image-sticky .overlay-copy p {
+    margin: 0;
+    font-size: .98rem;
+    line-height: 1.75;
+    color: var(--text);
+}
+@media (max-width: 700px) {
+    .rebuild-quote.quote5,
+    .rebuild-quote.quote6,
+    .fullscreen-quote .overlay-copy,
+    .outro-image-sticky .overlay-copy {
+        left: 1.3rem;
+        right: 1.3rem;
+        width: auto;
+        padding: 1.4rem 1.35rem;
+    }
+    .rebuild-quote.quote5 p,
+    .rebuild-quote.quote6 p,
+    .fullscreen-quote .overlay-copy p,
+    .outro-image-sticky .overlay-copy p {
+        font-size: .92rem;
+        line-height: 1.62;
+    }
 }
 
 </style>
@@ -1386,11 +1359,11 @@ body {
         <div class="intro-figure" data-year="1912">
             <div class="intro-figure-inner">
                 <img src="Bilder/1_Trommlercorps1916_1.JPG" alt="Frühe Jahre des Corps">
-                <div class="image-year pos-br">ca. 1920</div>
+                <div class="image-year pos-tc">ca. 1920</div>
                 <div class="intro-overlay">
                     <div class="intro-overlay-inner">
                         <h1>Ein kurzer Überblick</h1>
-						<h1>über unsere Historie</h1>
+                        <h1>über unsere Historie</h1>
                         <div class="accent"></div>
                     </div>
                 </div>
@@ -1400,7 +1373,7 @@ body {
         <!-- TEXT 1 (volle Breite, weiß) – sitzt hinter dem Bild und wird freigelegt -->
         <div class="text-block">
             <div class="text-inner">
-                <div class="year">1911 – 1912</div>
+                <div class="year">1912</div>
                 <h3>Die Idee und die Gründung</h3>
                 <p>Als 1911 ein paar junge Männer die Idee entwickelten, gemeinsam Musik in einem Tambourcorps zu machen, stand deren Verwirklichung zunächst einmal das Problem im Wege, dass man diese Art von Musik nur in den umliegenden Städten betreiben konnte. Also sahen sich Heinrich Bauer, Wilhelm Dieken, Jean Holländer, Josef Müschen und Karl Thomas gezwungen, einen anderen Weg zu beschreiten: Sie machten sich Gedanken über die Gründung eines eigenen Vereins.</p>
                 <p>Man marschierte zunächst einmal probeweise an der Spitze des „Kameradschaftlichen Kriegervereins“ bei der Kaiser-Geburtstagsfeier – ja, den gab’s da noch – und des Kriegerverbandsfestes in Süggerath mit. Da das schon mal ganz gut ankam, fanden sich bald weitere fünf Interessierte: Andreas Kremer, Albert Küppenbender, Matthias Klein, Franz Mülfarth und Hubert Zitzen. Offensichtlich befand man diese Mannzahl als ausreichend, um einen Verein zu gründen. Dies geschah 1912.</p>
@@ -1436,7 +1409,7 @@ body {
         <div class="rebuild-sticky">
             <div class="rebuild-base-panel" id="rebuildBasePanel">
                 <div class="text-inner">
-                    <div class="year">1945 – 1957</div>
+                    <div class="year">1945 – 1960</div>
                     <h3>Wiederaufbau in schwierigen Zeiten</h3>
                     <p>Die Führung des Vereins übernahm Schmitze Jupp, der zusammen mit Mölfarths Fränz, Erdwechs Käsper und Mertense Hubett auch die Ausbildung der Neumitglieder übernahm. Die Kasse übernahm schon damals ein junger Mann namens Kaspar (Kääp) Sieberichs, der 1938 dem Verein beigetreten war.</p>
                     <p>Wer sich die gesamte Chronik zu Gemüte führt, kann schon ein paar Stunden Spaß mit den Anekdoten der damals selten spaßigen Zeit verbringen:</p>
@@ -1510,7 +1483,7 @@ body {
             </div>
 
             <div class="sixties-copy sixties-copy-1" id="sixtiesText1">
-                <div class="year">1975 – 1996</div>
+                <div class="year">1960 – 2000</div>
                 <h3>Prägende Persönlichkeiten und neue Wege</h3>
                 <p>Anfang der 60er übernahm ein Mann die Stabführung von Franz Mülfarth, der in den folgenden Jahrzehnten zum Aushängeschild unseres Vereins und weit über die Grenzen Brachelens hinaus bekannt wurde: Kruetzere Willke. Er war ein Vorbild an Pflichtbewusstsein, das, gepaart mit seiner einnehmenden Menschlichkeit, viele Menschen nah und fern noch heute an ihn erinnert.</p>
             </div>
@@ -1521,7 +1494,7 @@ body {
         </div>
     </section>
 
-    <!-- ─── STORY 4B/5: 1975–Heute als eigene Bildsequenz ───── -->
+    <!-- ─── STORY 4B: 1975 bis unmittelbar vor Bild 15 ───── -->
     <section class="seventies-sequence" data-year="1975">
         <div class="seventies-sticky">
             <div class="seventies-layer seventies-image13" id="seventiesImage13">
@@ -1532,74 +1505,96 @@ body {
                 <img src="Bilder/14_Trommlercorps1980_1.JPG" alt="Trommlercorps 1980">
                 <div class="image-year pos-br">1980</div>
             </div>
-            <div class="seventies-layer seventies-image15" id="seventiesImage15">
-                <img src="Bilder/15_Trommlercorps1987_1.JPG" alt="Trommlercorps 1987">
-                <div class="image-year pos-bl">1987</div>
-            </div>
-
-            <div class="today-standalone today-underlay" id="todayUnderlay" aria-label="Heute – Festes Programm und lebendige Gemeinschaft">
-                <figure class="today-inline-image">
-                    <img src="Bilder/16_Trommlercorps2009.jpg" alt="Trommlercorps 2009">
-                    <div class="image-year pos-br">2009</div>
-                </figure>
-                <div class="text-inner">
-                    <div class="year">Heute</div>
-                    <h3>Festes Programm und lebendige Gemeinschaft</h3>
-                    <p>Nachdem wir schon seit 1913 das Schützenfest (Bronk) in Linnich verschönerten, kam im Jahr 1982 das Schützenfest in Korschenbroich (Unges Pengste) hinzu. Hier kommen wir genauso gern hin wie zu den tollen Festen in Venn (seit 1999) und Glehn (seit 2002), die seit vielen Jahren zu unserem festen Programm gehören:</p>
-                    <ul>
-                        <li>Pfingsten – klarer Fall, immer Korschenbroich</li>
-                        <li>eine Woche vorher – immer Brachelen</li>
-                        <li>eine Woche nachher – immer Linnich</li>
-                        <li>erstes Juli-Wochenende – Venn</li>
-                        <li>erstes September-Wochenende – Glehn</li>
-                        <li>letzter Januar-Sonntag (meistens) – St. Sebastianus</li>
-                    </ul>
-                    <p>Entscheidend sind für uns aber nach wie vor – wie schon vor 100 Jahren – unsere Aktivitäten in Brachelen. Hier fühlen wir uns besonders wohl, weil man sich hier besonders geschätzt fühlt. Brachelener wissen, was sie an uns haben; wir wissen, was wir an den Brachelenern haben.</p>
-                    <p>Also machen wir doch alle weiter so? Nicht so! Immer irgendwie anders, aber weiter. Und ich? Ja, ich bleib halt noch ein paar Jahre bei dem Haufen … so wie es 1966 schon gedacht war.</p>
-                </div>
-            </div>
-
-            <div class="seventies-final-image-layer" id="seventiesFinalImageLayer" aria-label="Trommlercorps beim Auftritt">
-                <img id="finalParallaxImage" src="Bilder/17_DSCF6907.jpg" alt="Trommlercorps beim Auftritt">
-                <div class="image-year pos-bc">2025</div>
-                <div class="final-image-copy final-image-copy-credit" id="finalTextCredit">
-                    <p>Der Text dieser Seite wurde von unserem Mitglied Willi Genotte anlässlich des 100-jährigen Jubiläums im Jahr 2012 verfasst.</p>
-                </div>
-            </div>
-
             <div class="seventies-copy seventies-copy-3" id="seventiesText3">
                 <p>1975 gab es einen entscheidenden Einschnitt, weil wir nämlich auf das herkömmliche Notensystem „umtrainiert“ wurden. 1977 stiegen wir auch noch ins „Entsorgungsgeschäft“ ein, indem wir alle 2 Monate Brachelens Altpapier einsammelten. Jedenfalls versetzte uns diese Zusatzeinnahme in die komfortable Lage, in fast jedem Jahr einen Ausflug in die nähere oder weitere Umgebung unserer Heimat zu machen.</p>
             </div>
-
-            <div class="seventies-copy seventies-copy-4" id="seventiesText4">
-                <p>Im Jahr 1996 hatte ich wieder einmal ein einschneidendes Erlebnis: „Mein“ Vorsitzender Hubert Kreutzer (ich hatte nie einen anderen gehabt!) ließ sich nicht mehr erweichen und gab dieses Amt in die Hände seines Neffen Reinhold, der unseren Verein seit diesem Jahr umsichtig führt.</p>
-            </div>
         </div>
-        <div class="final-outro-stack" id="finalOutroStack">
-
-    <!-- ─── OUTRO ─────────────────────────────────────── -->
-    <section class="chronik-outro">
-        <p>Haben Sie Erinnerungen oder Fotos aus der Vereinsgeschichte?</p>
-        <p><a href="mailto:info@trommlercorps-brachelen.de">Wir freuen uns über Ihre Nachricht!</a></p>
-        <a class="btn" href="index.html">← Zurück zur Startseite</a>
     </section>
 
-    <!-- ─── FOOTER ───────────────────────────────────────────────── -->
-<footer class="footer">
-    <div class="footer-inner">
-        <p class="footer-copy">© 2025 Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
-        <div class="footer-links">
-            <a href="mailto:info@trommlercorps-brachelen.de" class="footer-link">Kontaktieren</a>
-			<button class="footer-link" type="button" onclick="openLegalModal('datenschutz')">Datenschutzerklärung</button>
-            <button class="footer-link" type="button" onclick="openLegalModal('impressum')">Impressum</button>
+    <!-- ─── MERGE: Parallax-Schluss aus der separaten Parallax-Datei ab Bild 15 ───── -->
+    <section class="chronik-parallax-stage" id="chronikParallaxStage" aria-label="Parallax-Abschluss der Chronik">
+        <div class="chronik-parallax-scene">
+            <div class="chronik-parallax-bg-strip" id="chronikParallaxBackgroundStrip">
+                <div class="chronik-parallax-bg-panel" id="chronikParallaxBgPanel15">
+                    <img id="chronikParallaxBg15" src="Bilder/15_Trommlercorps1987_1.JPG" alt="Trommlercorps 1987">
+                    <div class="chronik-parallax-image-year pos-br" id="chronikParallaxYear15">1987</div>
+                </div>
+                <div class="chronik-parallax-bg-panel" id="chronikParallaxBgPanel16">
+                    <img id="chronikParallaxBg16" src="Bilder/16_Trommlercorps2009.jpg" alt="Trommlercorps 2009">
+                </div>
+                <div class="chronik-parallax-bg-panel" id="chronikParallaxBgPanel17">
+                    <img id="chronikParallaxBg17" src="Bilder/17_DSCF6907.jpg" alt="Trommlercorps beim Auftritt">
+                    <div class="chronik-parallax-image-year pos-tc chronik-parallax-year-2025" id="chronikParallaxYear17">2025</div>
+                </div>
+            </div>
+
+            <div class="chronik-parallax-foreground chronik-parallax-fg-01" id="chronikParallaxFg01">
+                <img src="Bilder/17_IMG_5750.JPG" alt="Historisches Vereinsfoto">
+            </div>
+            <div class="chronik-parallax-foreground chronik-parallax-fg-03" id="chronikParallaxFg03">
+                <img src="Bilder/19_DSC07504.JPG" alt="Historisches Vereinsfoto">
+            </div>
+            <div class="chronik-parallax-foreground chronik-parallax-fg-04" id="chronikParallaxFg04">
+                <img src="Bilder/20_w1900_h1068_x3008_y2008_11389309620-ebc24e58fbf39be2.jpg" alt="Trommlercorps 2009">
+            </div>
+            <div class="chronik-parallax-foreground chronik-parallax-fg-05" id="chronikParallaxFg05">
+                <img src="Bilder/21_w1900_h1068_x1795_y1154_11389308411-8449b85e85b214d8.jpg" alt="Historisches Vereinsfoto">
+            </div>
+            <div class="chronik-parallax-foreground chronik-parallax-fg-06" id="chronikParallaxFg06">
+                <img src="Bilder/22_w1900_h1068_x1795_y1198_11389309014-30433d4cf1bbc7f4.jpg" alt="Trommlercorps 1987">
+            </div>
+            <div class="chronik-parallax-foreground chronik-parallax-fg-08" id="chronikParallaxFg08">
+                <img src="Bilder/23_2023-05-21_Kirmes Sonntag_0628.jpg" alt="Trommlercorps beim Auftritt">
+            </div>
+
+            <div class="chronik-parallax-copy-card chronik-parallax-1996-card" id="chronikParallaxText1996">
+                <p>Im Jahr 1996 hatte ich wieder einmal ein einschneidendes Erlebnis: „Mein“ Vorsitzender Hubert Kreutzer (ich hatte nie einen anderen gehabt!) ließ sich nicht mehr erweichen und gab dieses Amt in die Hände seines Neffen Reinhold, der unseren Verein seit diesem Jahr umsichtig führt.</p>
+            </div>
+
+            <div class="chronik-parallax-copy-card chronik-parallax-today-card" id="chronikParallaxTodayCard">
+                <div class="year">Heute</div>
+                <h3>Festes Programm und lebendige Gemeinschaft</h3>
+                <p>Nachdem wir schon seit 1913 das Schützenfest (Bronk) in Linnich verschönerten, kam im Jahr 1982 das Schützenfest in Korschenbroich (Unges Pengste) hinzu. Hier kommen wir genauso gern hin wie zu den tollen Festen in Venn (seit 1999) und Glehn (seit 2002), die seit vielen Jahren zu unserem festen Programm gehören:</p>
+                <ul>
+                    <li>Pfingsten – klarer Fall, immer Korschenbroich</li>
+                    <li>eine Woche vorher – immer Brachelen</li>
+                    <li>eine Woche nachher – immer Linnich</li>
+                    <li>erstes Juli-Wochenende – Venn</li>
+                    <li>erstes September-Wochenende – Glehn</li>
+                    <li>letzter Januar-Sonntag (meistens) – St. Sebastianus</li>
+                </ul>
+                <p>Entscheidend sind für uns aber nach wie vor – wie schon vor 100 Jahren – unsere Aktivitäten in Brachelen. Hier fühlen wir uns besonders wohl, weil man sich hier besonders geschätzt fühlt. Brachelener wissen, was sie an uns haben; wir wissen, was wir an den Brachelenern haben.</p>
+                <p>Also machen wir doch alle weiter so? Nicht so! Immer irgendwie anders, aber weiter. Und ich? Ja, ich bleib halt noch ein paar Jahre bei dem Haufen … so wie es 1966 schon gedacht war.</p>
+            </div>
+
+
+            <div class="chronik-parallax-grain"></div>
         </div>
-    </div>
-</footer>
+
+        <div class="final-outro-stack" id="finalOutroStack">
+            <!-- ─── OUTRO ─────────────────────────────────────── -->
+            <section class="chronik-outro">
+                <p>Der Text dieser Seite wurde von unserem Mitglied Willi Genotte anlässlich des 100-jährigen Jubiläums im Jahr 2012 verfasst.</p>
+                <p>Haben Sie Erinnerungen oder Fotos aus der Vereinsgeschichte?</p>
+                <p><a href="mailto:info@trommlercorps-brachelen.de">Wir freuen uns über Ihre Nachricht!</a></p>
+                <a class="btn" href="index.html">← Zurück zur Startseite</a>
+            </section>
+
+            <!-- ─── FOOTER ───────────────────────────────────────────────── -->
+            <footer class="footer">
+                <div class="footer-inner">
+                    <p class="footer-copy">© 2025 Trommler- und Pfeifercorps 1912 Brachelen e.V.</p>
+                    <div class="footer-links">
+                        <a href="mailto:info@trommlercorps-brachelen.de" class="footer-link">Kontaktieren</a>
+                        <button class="footer-link" type="button" onclick="openLegalModal('datenschutz')">Datenschutzerklärung</button>
+                        <button class="footer-link" type="button" onclick="openLegalModal('impressum')">Impressum</button>
+                    </div>
+                </div>
+            </footer>
         </div>
     </section>
 
 </div><!-- /.content -->
-
 
 
 <!-- ─── MODAL: RECHTLICHES (zentral geladen) ───────────────────── -->
@@ -1613,14 +1608,6 @@ body {
 
 <script>
 
-function openModal(id) {
-    document.getElementById('modal-' + id).classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-    document.getElementById('modal-' + id).classList.remove('open');
-    document.body.style.overflow = '';
-}
 document.querySelectorAll('.modal-overlay').forEach(o => {
     o.addEventListener('click', e => {
         if (e.target === o) { o.classList.remove('open'); document.body.style.overflow = ''; }
@@ -1657,20 +1644,6 @@ const sixtiesImage11 = document.getElementById('sixtiesImage11');
 const sixtiesImage12 = document.getElementById('sixtiesImage12');
 const sixtiesText1 = document.getElementById('sixtiesText1');
 const sixtiesText2 = document.getElementById('sixtiesText2');
-const seventiesSequence = document.querySelector('.seventies-sequence');
-const seventiesImage13 = document.getElementById('seventiesImage13');
-const seventiesImage14 = document.getElementById('seventiesImage14');
-const seventiesImage15 = document.getElementById('seventiesImage15');
-const seventiesText3 = document.getElementById('seventiesText3');
-const seventiesText4 = document.getElementById('seventiesText4');
-const todayUnderlay = document.getElementById('todayUnderlay');
-const seventiesFinalImageLayer = document.getElementById('seventiesFinalImageLayer');
-const finalImageSequence = document.getElementById('finalImageSequence');
-const finalImageSticky = document.getElementById('finalImageSticky');
-const finalParallaxImage = document.getElementById('finalParallaxImage');
-const finalOutroStack = document.getElementById('finalOutroStack');
-const todayFinalText = document.getElementById('todayFinalText');
-const finalTextCredit = document.getElementById('finalTextCredit');
 
 
 // ─── Text einblenden, sobald Story sichtbar ───
@@ -1865,69 +1838,6 @@ function onScroll() {
         clipToWipeLine(sixtiesText2, true);
     }
 
-    // STORY 4B/5: 1975–Heute Sequenz.
-    // Bild 13 liegt direkt unter Bild 12 und fährt nicht erst aus einer weißen Fläche ein.
-    // Bild 15 wird ohne Opacity-Fade von unten hochgeschoben. Danach wischt Bild 16
-    // von unten nach oben darüber; erst anschließend wird der Heute-Text hochgeschoben.
-    if (seventiesSequence && seventiesImage13 && seventiesImage14 && seventiesImage15 && seventiesText3 && seventiesText4) {
-        const rect = seventiesSequence.getBoundingClientRect();
-        const range = Math.max(rect.height - vh, 1);
-        const p = Math.min(Math.max(-rect.top / range, 0), 1);
-
-        const fadeTo14 = smoothstep(0.18, 0.32, p);
-        const swapTo15 = smoothstep(0.40, 0.60, p);
-        const wipeTo16 = smoothstep(0.66, 0.78, p);
-
-        const oldY = -swapTo15 * vh;
-        const newY = (1 - swapTo15) * vh;
-
-        seventiesImage13.style.transform = 'translateY(' + oldY.toFixed(1) + 'px)';
-        seventiesImage14.style.transform = 'translateY(' + oldY.toFixed(1) + 'px)';
-        seventiesText3.style.transform = 'translateY(' + oldY.toFixed(1) + 'px)';
-
-        seventiesImage14.style.opacity = fadeTo14.toFixed(3);
-
-        seventiesImage15.style.transform = 'translateY(' + newY.toFixed(1) + 'px)';
-        seventiesImage15.style.opacity = '1';
-        seventiesImage15.style.clipPath = 'inset(0 0 0 0)';
-        seventiesText4.style.transform = 'translateY(' + newY.toFixed(1) + 'px)';
-        seventiesText4.style.opacity = '1';
-        seventiesText4.style.clipPath = 'inset(0 0 0 0)';
-
-        // Übergang zu Heute: Bild 16 wischt von unten nach oben über Bild 15.
-        // Erst wenn Bild 16 vollständig steht, wird der Heute-Text nach oben geschoben.
-        if (todayUnderlay) {
-            const todayTextScroll = smoothstep(0.82, 0.90, p);
-            const fixedTextShift = vh;
-            const clipTop = (1 - wipeTo16) * 100;
-            todayUnderlay.style.clipPath = 'inset(' + clipTop.toFixed(2) + '% 0 0 0)';
-            todayUnderlay.style.transform = 'translateY(' + (-todayTextScroll * fixedTextShift).toFixed(1) + 'px)';
-        }
-
-        if (seventiesFinalImageLayer && finalParallaxImage) {
-            // Bild 17 fährt zuerst vollständig von unten über den stehenden Text.
-            // Danach wird es auf Weiß transparent; währenddessen erscheint der Credit oben mittig.
-            // Outro und Footer liegen wieder als absolute Schluss-Ebene am Ende der Sequenz
-            // und werden dadurch im selben Abschnitt von unten hochgeschoben.
-            const finalEnter = smoothstep(0.925, 0.965, p);
-            const imageFade = smoothstep(0.968, 0.992, p);
-            const creditIn = smoothstep(0.970, 0.990, p);
-            const finalLayerY = (1 - finalEnter) * vh;
-            const finalScale = 1.05 - finalEnter * 0.05;
-            const creditY = (1 - creditIn) * 24 - imageFade * 6;
-
-            seventiesFinalImageLayer.style.transform = 'translateY(' + finalLayerY.toFixed(1) + 'px)';
-            seventiesFinalImageLayer.style.opacity = finalEnter > 0 ? '1' : '0';
-            seventiesFinalImageLayer.style.setProperty('--final-white-opacity', (imageFade * 0.72).toFixed(3));
-            finalParallaxImage.style.transform = 'scale(' + finalScale.toFixed(3) + ')';
-            finalParallaxImage.style.opacity = (1 - imageFade * 0.58).toFixed(3);
-
-            if (finalTextCredit) {
-                finalTextCredit.style.opacity = creditIn.toFixed(3);
-                finalTextCredit.style.transform = 'translate(-50%, ' + creditY.toFixed(1) + 'px)';
-            }
-        }
-    }
 
     // Bilder der normalen Story-Blöcke: "von hinten" heranzoomen.
     // Story 2 ist ausgenommen, weil sie als stehendes Bild ohne Zoom arbeitet.
@@ -1965,6 +1875,252 @@ function requestTick() {
 window.addEventListener('scroll', requestTick, { passive: true });
 window.addEventListener('resize', requestTick);
 onScroll();
+</script>
+
+
+<script>
+(() => {
+    const section = document.querySelector('.seventies-sequence');
+    const image14 = document.getElementById('seventiesImage14');
+    const text3 = document.getElementById('seventiesText3');
+    if (!section || !image14 || !text3) return;
+
+    let seventiesTicking = false;
+    function clamp(value, min = 0, max = 1) { return Math.min(Math.max(value, min), max); }
+    function smoothstep(edge0, edge1, x) {
+        const t = clamp((x - edge0) / (edge1 - edge0));
+        return t * t * (3 - 2 * t);
+    }
+    function updateSeventiesIntro() {
+        const vh = window.innerHeight;
+        const rect = section.getBoundingClientRect();
+        const range = Math.max(rect.height - vh, 1);
+        const p = clamp(-rect.top / range);
+        const fadeTo14 = smoothstep(0.18, 0.36, p);
+        const textOut = smoothstep(0.72, 0.92, p);
+
+        image14.style.opacity = fadeTo14.toFixed(3);
+        text3.style.opacity = (1 - textOut).toFixed(3);
+        text3.style.transform = 'translateY(' + (-textOut * vh * 0.28).toFixed(1) + 'px)';
+        seventiesTicking = false;
+    }
+    function requestSeventiesTick() {
+        if (!seventiesTicking) {
+            requestAnimationFrame(updateSeventiesIntro);
+            seventiesTicking = true;
+        }
+    }
+    window.addEventListener('scroll', requestSeventiesTick, { passive: true });
+    window.addEventListener('resize', updateSeventiesIntro);
+    window.addEventListener('load', updateSeventiesIntro);
+    updateSeventiesIntro();
+})();
+</script>
+
+<script>
+(() => {
+    const stage = document.getElementById('chronikParallaxStage');
+    if (!stage) return;
+
+    const backgroundStrip = document.getElementById('chronikParallaxBackgroundStrip');
+    const bgPanel15 = document.getElementById('chronikParallaxBgPanel15');
+    const bgPanel16 = document.getElementById('chronikParallaxBgPanel16');
+    const bgPanel17 = document.getElementById('chronikParallaxBgPanel17');
+    const year15 = document.getElementById('chronikParallaxYear15');
+    const year17 = document.getElementById('chronikParallaxYear17');
+    const fg01 = document.getElementById('chronikParallaxFg01');
+    const fg03 = document.getElementById('chronikParallaxFg03');
+    const fg04 = document.getElementById('chronikParallaxFg04');
+    const fg05 = document.getElementById('chronikParallaxFg05');
+    const fg06 = document.getElementById('chronikParallaxFg06');
+    const fg08 = document.getElementById('chronikParallaxFg08');
+    const text1996 = document.getElementById('chronikParallaxText1996');
+    const todayCard = document.getElementById('chronikParallaxTodayCard');
+
+    let parallaxTicking = false;
+
+    // Gemeinsame Steuerwerte für das erste AVIF-Bild und den 1996-Text.
+    // Dadurch nutzen beide Elemente dieselbe Scrollstrecke und dieselbe Easing-Kurve.
+    const firstAvifEnterStart = 0.015;
+    const firstAvifEnterEnd = 0.095;
+    const firstAvifStartY = 118;
+    const firstAvifEndY = 52;
+
+    function clamp(value, min = 0, max = 1) {
+        return Math.min(Math.max(value, min), max);
+    }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function easeInOut(t) {
+        t = clamp(t);
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    function easeOut(t) {
+        t = clamp(t);
+        return 1 - Math.pow(1 - t, 3);
+    }
+    function range(progress, start, end) {
+        return clamp((progress - start) / (end - start));
+    }
+    function active(progress, start, end) {
+        return progress >= start && progress <= end ? 1 : 0;
+    }
+    function setLayer(el, options) {
+        if (!el) return;
+        const { x = 50, y = 50, opacity = 1, clip = 'inset(0 0 0 0)' } = options;
+        el.style.opacity = opacity ? '1' : '0';
+        el.style.transform = `translate3d(${x}vw, ${y}vh, 0) translate(-50%, -50%) scale(1)`;
+        el.style.clipPath = clip;
+    }
+    function leftToRightWipe(reveal) {
+        reveal = clamp(reveal);
+        return `inset(0 ${100 - reveal * 100}% 0 0)`;
+    }
+    function bottomToTopWipe(reveal) {
+        reveal = clamp(reveal);
+        return `inset(${100 - reveal * 100}% 0 0 0)`;
+    }
+    function setBgLighten(panel, amount) {
+        if (!panel) return;
+        // echte Aufhellung wie bei Bild 8: weißer Layer über dem Bild
+        const opacity = lerp(0, 0.68, clamp(amount));
+        panel.style.setProperty('--bg-lighten-opacity', opacity.toFixed(3));
+    }
+    function updateBackground(p) {
+        if (!backgroundStrip) return;
+        const moveProgress = easeInOut(range(p, 0.00, 0.94));
+        const y = lerp(0, -200, moveProgress);
+        backgroundStrip.style.transform = `translate3d(0, ${y}vh, 0)`;
+
+        // Bild 15: erst normal, dann beim Herausschieben des 1996-Texts aufgehellt.
+        // Die Jahreszahl verschwindet synchron zur Aufhellung.
+        const bg15Lighten = easeInOut(range(p, firstAvifEnterStart, firstAvifEnterEnd));
+        setBgLighten(bgPanel15, bg15Lighten);
+        if (year15) {
+            const year15Opacity = 1 - bg15Lighten;
+            year15.style.opacity = year15Opacity.toFixed(3);
+            year15.style.visibility = year15Opacity > 0.02 ? 'visible' : 'hidden';
+        }
+
+        // Bild 16: dauerhaft aufgehellt
+        setBgLighten(bgPanel16, 1);
+
+        // Schlussbild: zunächst aufgehellt, erst nach dem Herausfahren des Heute-Texts
+        // wieder normal, parallel zu Credit und Footer. Die Jahreszahl 2025 erscheint
+        // erst während dieses Rückwechsels von aufgehellt zu normal.
+        const bg17NormalProgress = easeInOut(range(p, 0.975, 1.000));
+        setBgLighten(bgPanel17, 1 - bg17NormalProgress);
+        if (year17) {
+            year17.style.opacity = bg17NormalProgress.toFixed(3);
+            year17.style.visibility = bg17NormalProgress > 0.02 ? 'visible' : 'hidden';
+        }
+    }
+    function updateForegrounds(p) {
+        const groupExit = easeInOut(range(p, 0.17, 0.30));
+        const fg1Enter = easeOut(range(p, firstAvifEnterStart, firstAvifEnterEnd));
+        const fg1Y = p < 0.17 ? lerp(firstAvifStartY, firstAvifEndY, fg1Enter) : lerp(firstAvifEndY, -78, groupExit);
+        const fg1X = window.innerWidth <= 900 ? 34 : 28;
+        const fg3X = window.innerWidth <= 900 ? 72 : 76;
+        setLayer(fg01, { x: fg1X, y: fg1Y, opacity: active(p, firstAvifEnterStart, 0.30) });
+
+        const sideReveal = easeOut(range(p, 0.065, 0.13));
+        const sideY = p < 0.17 ? 53 : lerp(53, -76, groupExit);
+        setLayer(fg03, { x: fg3X, y: sideY, opacity: active(p, 0.065, 0.30), clip: leftToRightWipe(sideReveal) });
+
+        const fg45Enter = easeOut(range(p, 0.265, 0.38));
+        const fg4BaseY = lerp(116, 48, fg45Enter);
+        const fg5BaseY = lerp(116, 56, fg45Enter);
+        setLayer(fg04, { x: 29, y: fg4BaseY, opacity: active(p, 0.265, 0.58) });
+
+        let fg5Y = fg5BaseY;
+        if (p > 0.70) fg5Y = lerp(56, -116, easeInOut(range(p, 0.70, 0.82)));
+        setLayer(fg05, { x: 71, y: fg5Y, opacity: active(p, 0.265, 0.84) });
+
+        const fg6Reveal = easeInOut(range(p, 0.45, 0.535));
+        let fg6Y = 48;
+        if (p > 0.70) fg6Y = lerp(48, -72, easeInOut(range(p, 0.70, 0.85)));
+        setLayer(fg06, { x: 29, y: fg6Y, opacity: active(p, 0.45, 0.87), clip: bottomToTopWipe(fg6Reveal) });
+
+        // Bild 23 bekommt zuerst seinen eigenen Auftritt und wird vollständig
+        // nach oben hinausgeschoben, bevor der Heute-Text eingeschoben wird.
+        const fg8Enter = easeOut(range(p, 0.720, 0.785));
+        let fg8Y = lerp(118, 34, fg8Enter);
+        if (p > 0.840) fg8Y = lerp(34, -108, easeInOut(range(p, 0.840, 0.900)));
+        setLayer(fg08, { x: 50, y: fg8Y, opacity: active(p, 0.720, 0.905) });
+    }
+    function updateCard(card, p, start, shown, end) {
+        if (!card) return;
+        const intro = easeOut(range(p, start, shown));
+        const outro = easeInOut(range(p, shown + 0.06, end));
+        const opacity = intro * (1 - outro);
+        const y = lerp(34, 0, intro) - outro * 42;
+        card.style.opacity = opacity.toFixed(3);
+        card.style.transform = `translateY(${y.toFixed(1)}px)`;
+        card.style.pointerEvents = opacity > 0.05 ? 'auto' : 'none';
+    }
+
+    function updateTodayCard(p) {
+        if (!todayCard) return;
+
+        // Reihenfolge:
+        // 1) Bild 23 ist bis ca. 0.900 hinausgeschoben.
+        // 2) Heute-Text wird von unten eingeschoben.
+        // 3) Heute-Text wird nach oben hinausgeschoben.
+        // 4) Danach werden Schlussbild, Credit und Footer sichtbar.
+        const intro = easeOut(range(p, 0.908, 0.938));
+        const outro = easeInOut(range(p, 0.958, 0.982));
+        const opacity = intro * (1 - outro);
+        const y = lerp(110, 0, intro) - outro * 118;
+
+        todayCard.style.opacity = opacity.toFixed(3);
+        todayCard.style.transform = `translate(-50%, -50%) translateY(${y.toFixed(1)}vh)`;
+        todayCard.style.pointerEvents = opacity > 0.05 ? 'auto' : 'none';
+    }
+    function updateText1996(p) {
+        if (!text1996) return;
+
+        // Der 1996-Text nutzt weiterhin dieselbe Progress-/Easing-Kurve wie
+        // das erste AVIF-Bild. Die Zielstrecke ist aber groß genug, damit die
+        // Karte schon vor Beginn der folgenden Wipe-Wirkung komplett oberhalb
+        // des Viewports liegt und nicht am oberen Rand hängen bleibt.
+        const push = easeOut(range(p, firstAvifEnterStart, firstAvifEnterEnd));
+        const fullExitPx = Math.max(
+            text1996.offsetTop + text1996.offsetHeight + 56,
+            window.innerHeight * 1.14
+        );
+        const y = -push * fullExitPx;
+        const isVisible = p < firstAvifEnterEnd;
+
+        text1996.style.opacity = isVisible ? '1' : '0';
+        text1996.style.transform = `translateY(${y.toFixed(1)}px)`;
+        text1996.style.clipPath = 'inset(0 0 0 0)';
+        text1996.style.pointerEvents = isVisible ? 'auto' : 'none';
+    }
+
+    function updateTextCards(p) {
+        updateText1996(p);
+        updateTodayCard(p);
+
+    }
+    function updateParallax() {
+        const rect = stage.getBoundingClientRect();
+        const maxScroll = Math.max(stage.offsetHeight - window.innerHeight, 1);
+        const progress = clamp(-rect.top / maxScroll);
+        updateBackground(progress);
+        updateForegrounds(progress);
+        updateTextCards(progress);
+        parallaxTicking = false;
+    }
+    function requestParallaxTick() {
+        if (!parallaxTicking) {
+            requestAnimationFrame(updateParallax);
+            parallaxTicking = true;
+        }
+    }
+    window.addEventListener('scroll', requestParallaxTick, { passive: true });
+    window.addEventListener('resize', updateParallax);
+    window.addEventListener('load', updateParallax);
+    updateParallax();
+})();
 </script>
 
 <script src="assets/js/legal-modal.js" data-legal-src="rechtliches.html"></script>
